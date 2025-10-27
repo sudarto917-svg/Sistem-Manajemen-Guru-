@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Guru</title>
-    <!-- Muat Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Muat ikon (Heroicons) -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <style>
@@ -27,14 +25,11 @@
 </head>
 <body class="bg-gray-100">
 
-    <!-- Kontainer Utama -->
     <div class="flex flex-col md:flex-row min-h-screen">
-        <!-- Sidebar -->
         <aside class="w-full md:w-64 bg-white shadow-lg md:min-h-screen p-4">
             <h1 class="text-2xl font-bold text-blue-700 mb-6 text-center">Dashboard Guru</h1>
             <nav>
                 <ul class="space-y-2">
-                    <!-- Tombol Navigasi -->
                     <li>
                         <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-100 bg-blue-100" data-page="dashboard">
                             <ion-icon name="home-outline" class="mr-3 text-xl"></ion-icon>
@@ -71,7 +66,6 @@
                             Perkembangan Materi
                         </a>
                     </li>
-                    <!-- BARU: Menu Bank Sumber Belajar -->
                     <li>
                         <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-100" data-page="sumber-belajar">
                             <ion-icon name="archive-outline" class="mr-3 text-xl"></ion-icon>
@@ -92,11 +86,8 @@
             </div>
         </aside>
 
-        <!-- Konten Utama -->
         <main class="flex-1 p-6 md:p-10">
-            <!-- Halaman: Dashboard -->
             <div id="dashboard-page" class="page-content active">
-                <!-- Konten Dashboard (Tidak berubah) -->
                 <h2 class="text-3xl font-bold mb-6">Selamat Datang, Guru!</h2>
                 <p class="text-gray-600 mb-6">Gunakan menu di samping untuk mengelola data mengajar Anda. Semua data disimpan secara otomatis dan aman.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -115,15 +106,11 @@
                 </div>
             </div>
 
-            <!-- Halaman: Manajemen Kelas & Siswa -->
             <div id="kelas-siswa-page" class="page-content">
-                <!-- Konten Kelas & Siswa (Tidak berubah) -->
                 <h2 class="text-3xl font-bold mb-6">Manajemen Kelas & Siswa</h2>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Kolom Kiri: Manajemen Kelas -->
                     <div class="space-y-6">
-                        <!-- Form Tambah Kelas -->
                         <div class="bg-white p-6 rounded-lg shadow">
                             <h3 class="text-xl font-semibold mb-4">Tambah Kelas Baru</h3>
                             <form id="form-tambah-kelas" class="flex items-center space-x-3">
@@ -134,7 +121,6 @@
                             </form>
                         </div>
                         
-                        <!-- Daftar Kelas -->
                         <div class="bg-white p-6 rounded-lg shadow">
                             <h3 class="text-xl font-semibold mb-4">Daftar Kelas</h3>
                             <div id="daftar-kelas-list" class="space-y-3">
@@ -143,9 +129,7 @@
                         </div>
                     </div>
 
-                    <!-- Kolom Kanan: Manajemen Siswa -->
                     <div class="space-y-6">
-                        <!-- Form Tambah Siswa -->
                         <div class="bg-white p-6 rounded-lg shadow">
                             <h3 class="text-xl font-semibold mb-4">Tambah Siswa Baru</h3>
                             <form id="form-tambah-siswa" class="grid grid-cols-1 gap-4">
@@ -169,19 +153,15 @@
                     </div>
                 </div>
 
-                <!-- Daftar Siswa (dipindah ke bawah) -->
                 <div class="bg-white p-6 rounded-lg shadow mt-6">
                     <h3 class="text-xl font-semibold mb-4">Daftar Siswa per Kelas</h3>
                     <div id="daftar-siswa-container" class="space-y-4">
-                        <!-- BARU: Tombol "Catatan" akan ditambahkan di sini oleh JS -->
                         <p class="text-gray-500">Belum ada data siswa.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Halaman: Jadwal Mengajar -->
             <div id="jadwal-page" class="page-content">
-                <!-- Konten Jadwal (Tidak berubah) -->
                 <h2 class="text-3xl font-bold mb-6">Jadwal Mengajar</h2>
                 
                 <div class="bg-white p-6 rounded-lg shadow mb-6">
@@ -223,9 +203,7 @@
                 </div>
             </div>
 
-            <!-- Halaman: Absensi Siswa -->
             <div id="absensi-page" class="page-content">
-                <!-- Konten Absensi (Tidak berubah) -->
                 <h2 class="text-3xl font-bold mb-6">Absensi Siswa</h2>
                 
                 <div class="bg-white p-6 rounded-lg shadow mb-6 flex items-end space-x-4">
@@ -264,9 +242,7 @@
                 </div>
             </div>
 
-            <!-- Halaman: Input Nilai -->
             <div id="nilai-page" class="page-content">
-                <!-- Konten Nilai (Tidak berubah) -->
                 <h2 class="text-3xl font-bold mb-6">Input Nilai Siswa</h2>
 
                 <div class="bg-white p-6 rounded-lg shadow mb-6 flex items-end space-x-4">
@@ -288,21 +264,29 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Siswa</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 1</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 2</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UTS</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UAS</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 3</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 4</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 5</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 6</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 7</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 8</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 9</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas 10</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UTS 1</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UTS 2</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UAS 1</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UAS 2</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="daftar-nilai" class="bg-white divide-y divide-gray-200">
-                            <tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Pilih kelas terlebih dahulu.</td></tr>
+                            <tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Pilih kelas terlebih dahulu.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Halaman: Perkembangan Materi -->
             <div id="materi-page" class="page-content">
-                <!-- Konten Materi (Tidak berubah) -->
                 <h2 class="text-3xl font-bold mb-6">Perkembangan Materi</h2>
 
                 <div class="bg-white p-6 rounded-lg shadow mb-6">
@@ -344,11 +328,9 @@
                 </div>
             </div>
 
-            <!-- BARU: Halaman Bank Sumber Belajar -->
             <div id="sumber-belajar-page" class="page-content">
                 <h2 class="text-3xl font-bold mb-6">Bank Sumber Belajar</h2>
 
-                <!-- Form Tambah Sumber Belajar -->
                 <div class="bg-white p-6 rounded-lg shadow mb-6">
                     <h3 class="text-xl font-semibold mb-4">Tambah Sumber Belajar Baru</h3>
                     <form id="form-tambah-sumber" class="space-y-4">
@@ -368,8 +350,7 @@
                             <label class="block text-sm font-medium text-gray-700">Untuk Kelas (Opsional)</label>
                             <select id="sumber-belajar-pilih-kelas" class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="semua">Semua Kelas</option>
-                                <!-- Daftar kelas akan diisi oleh JS -->
-                            </select>
+                                </select>
                         </div>
                         <div class="text-right">
                             <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
@@ -379,7 +360,6 @@
                     </form>
                 </div>
 
-                <!-- Daftar Sumber Belajar -->
                 <div class="bg-white p-6 rounded-lg shadow">
                     <h3 class="text-xl font-semibold mb-4">Materi Tersimpan</h3>
                     <div id="daftar-sumber-belajar" class="space-y-4">
@@ -388,9 +368,7 @@
                 </div>
             </div>
 
-            <!-- Halaman: Laporan -->
             <div id="laporan-page" class="page-content">
-                <!-- Konten Laporan (Tidak berubah) -->
                 <h2 class="text-3xl font-bold mb-6">Laporan</h2>
 
                 <div class="bg-white p-6 rounded-lg shadow mb-6 flex items-end space-x-4">
@@ -421,7 +399,6 @@
         </main>
     </div>
 
-    <!-- Modal Notifikasi (Sukses/Error) -->
     <div id="notification-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-xl text-center w-11/12 md:w-1/3">
             <p id="notification-message" class="text-lg font-medium"></p>
@@ -431,7 +408,6 @@
         </div>
     </div>
 
-    <!-- Modal Konfirmasi (Hapus) -->
     <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-xl w-11/12 md:w-1/3">
             <h3 class="text-xl font-bold mb-4">Konfirmasi Hapus</h3>
@@ -447,19 +423,16 @@
         </div>
     </div>
 
-    <!-- BARU: Modal Catatan Perkembangan Siswa -->
     <div id="catatan-siswa-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-xl w-11/12 md:w-2/5 max-h-screen overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="catatan-modal-title" class="text-xl font-bold">Catatan Perkembangan</h3>
-                <button id="catatan-modal-close" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+                <button id="catatan-modal-close" class="text-gray-500 hover:text-gray-800 text-2xl">×</button>
             </div>
             
-            <!-- Form Tambah Catatan -->
             <form id="form-tambah-catatan" class="mb-4 space-y-2">
                 <label for="catatan-modal-input" class="block text-sm font-medium text-gray-700">Tambah Catatan Baru:</label>
                 <textarea id="catatan-modal-input" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis catatan kualitatif..." required></textarea>
-                <!-- Hidden inputs to store student data -->
                 <input type="hidden" id="catatan-modal-siswaId">
                 <input type="hidden" id="catatan-modal-namaSiswa">
                 <input type="hidden" id="catatan-modal-kelasId">
@@ -469,7 +442,6 @@
                 </button>
             </form>
             
-            <!-- Daftar Catatan Lama -->
             <hr class="my-4">
             <h4 class="text-lg font-semibold mb-3">Riwayat Catatan</h4>
             <div id="catatan-modal-list" class="space-y-3 max-h-64 overflow-y-auto">
@@ -479,13 +451,11 @@
     </div>
 
 
-    <!-- Toast Notifikasi Koneksi -->
     <div id="connection-toast" class="fixed bottom-0 left-1/2 -translate-x-1/2 mb-5 p-4 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-y-20 opacity-0 hidden">
         <span id="connection-toast-message" class="font-medium"></span>
     </div>
 
 
-    <!-- Firebase SDK -->
     <script type="module">
         // Impor fungsi-fungsi Firebase yang diperlukan
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -733,9 +703,8 @@
                     document.getElementById('laporan-pilih-kelas'),
                     document.getElementById('sumber-belajar-pilih-kelas') // BARU
                 ];
-                
                 const kelasListContainer = document.getElementById('daftar-kelas-list');
-
+                
                 // Kosongkan semua (kecuali opsi default)
                 selects.forEach(s => {
                     const firstOption = s.options[0];
@@ -756,7 +725,7 @@
                     
                     const option = `<option value="${kelasId}" data-nama="${namaKelas}">${namaKelas}</option>`;
                     selects.forEach(s => s.insertAdjacentHTML('beforeend', option));
-
+                    
                     kelasListContainer.innerHTML += `
                         <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                             <span class="font-medium">${namaKelas}</span>
@@ -793,12 +762,17 @@
             }
         }
 
+        // Fungsi Hapus Kelas (Tidak berubah)
         async function handleHapusKelas(kelasId, namaKelas) {
             showConfirmation(`Apakah Anda yakin ingin menghapus kelas "${namaKelas}"? SEMUA data siswa, nilai, absensi, jadwal, dan materi terkait kelas ini akan dihapus permanen.`, async () => {
                 showNotification("Menghapus data kelas...");
                 try {
                     const batch = writeBatch(db);
+                    
+                    // 1. Hapus dokumen kelas
                     batch.delete(doc(db, getPrivateCollectionPath('kelas'), kelasId));
+                    
+                    // 2. Hapus siswa di kelas tsb
                     const siswaQuery = query(collection(db, getPrivateCollectionPath('siswa')), where("kelasId", "==", kelasId));
                     const siswaSnap = await getDocs(siswaQuery);
                     const siswaIds = [];
@@ -807,31 +781,37 @@
                         siswaIds.push(doc.id);
                     });
 
-                    // Hapus data terkait siswa
+                    // 3. Hapus data terkait siswa (nilai, absensi, catatan)
+                    // Hapus nilai
                     siswaIds.forEach(id => {
                         batch.delete(doc(db, getPrivateCollectionPath('nilai'), id));
+                        
                         // Hapus catatan siswa
                         const catatanQuery = query(collection(db, getPrivateCollectionPath('catatan_siswa')), where("siswaId", "==", id));
                         getDocs(catatanQuery).then(snap => snap.forEach(d => batch.delete(d.ref)));
                     });
-                    
+
+                    // Hapus absensi
                     const absensiQuery = query(collection(db, getPrivateCollectionPath('absensi')), where("kelasId", "==", kelasId));
                     const absensiSnap = await getDocs(absensiQuery);
                     absensiSnap.forEach(doc => batch.delete(doc.ref));
-                    
+
+                    // 4. Hapus jadwal
                     const jadwalQuery = query(collection(db, getPrivateCollectionPath('jadwal')), where("kelasId", "==", kelasId));
                     const jadwalSnap = await getDocs(jadwalQuery);
                     jadwalSnap.forEach(doc => batch.delete(doc.ref));
-                    
+
+                    // 5. Hapus materi
                     const materiQuery = query(collection(db, getPrivateCollectionPath('materi')), where("kelasId", "==", kelasId));
                     const materiSnap = await getDocs(materiQuery);
                     materiSnap.forEach(doc => batch.delete(doc.ref));
 
-                    // Hapus sumber belajar terkait
+                    // 6. BARU: Hapus sumber belajar
                     const sumberQuery = query(collection(db, getPrivateCollectionPath('sumber_belajar')), where("kelasId", "==", kelasId));
                     const sumberSnap = await getDocs(sumberQuery);
                     sumberSnap.forEach(doc => batch.delete(doc.ref));
 
+                    // Commit batch
                     await batch.commit();
                     showNotification(`Kelas "${namaKelas}" dan semua data terkait berhasil dihapus.`);
                 } catch (error) {
@@ -840,7 +820,7 @@
                 }
             });
         }
-
+        
         function loadSiswa() {
             const siswaRef = collection(db, getPrivateCollectionPath('siswa'));
             onSnapshot(siswaRef, async (snapshot) => {
@@ -849,62 +829,61 @@
                     container.innerHTML = '<p class="text-gray-500">Belum ada data siswa.</p>';
                     return;
                 }
-
+                
                 container.innerHTML = '';
                 const siswaByKelas = {};
 
+                // Kelompokkan siswa berdasarkan kelasId
                 for (const docSnap of snapshot.docs) {
                     const siswa = docSnap.data();
                     const kelasId = siswa.kelasId;
-                    
                     if (!siswaByKelas[kelasId]) {
-                        siswaByKelas[kelasId] = { namaKelas: await getNamaKelas(kelasId), siswa: [] };
+                        siswaByKelas[kelasId] = {
+                            namaKelas: await getNamaKelas(kelasId),
+                            siswa: []
+                        };
                     }
-                    siswaByKelas[kelasId].siswa.push({ ...siswa, id: docSnap.id });
+                    siswaByKelas[kelasId].siswa.push({ id: docSnap.id, ...siswa });
                 }
 
+                // Tampilkan per kelas
                 for (const kelasId in siswaByKelas) {
                     const data = siswaByKelas[kelasId];
-                    if (data.namaKelas === "Kelas Tidak Ditemukan") continue; 
-                    
-                    let siswaHtml = `<h4 class="text-lg font-semibold mt-4">${data.namaKelas}</h4>
-                                     <ul class="list-disc list-inside pl-4 space-y-1">`;
-                    data.siswa.forEach(s => {
-                        siswaHtml += `
-                            <li class="flex justify-between items-center py-1">
-                                <span>${s.nama}</span>
-                                <span class="space-x-2">
-                                    <!-- BARU: Tombol Catatan -->
-                                    <button class="btn-lihat-catatan text-blue-600 hover:text-blue-800 text-sm font-semibold" 
-                                            data-siswa-id="${s.id}" 
-                                            data-nama-siswa="${s.nama}"
-                                            data-kelas-id="${s.kelasId}"
-                                            data-nama-kelas="${data.namaKelas}">
-                                        Catatan
-                                    </button>
-                                    <button class="btn-hapus-siswa text-red-500 hover:text-red-700 text-sm font-semibold" 
-                                            data-id="${s.id}" 
-                                            data-nama="${s.nama}">
-                                        Hapus
-                                    </button>
-                                </span>
-                            </li>`;
-                    });
-                    siswaHtml += `</ul>`;
-                    container.insertAdjacentHTML('beforeend', siswaHtml);
-                }
+                    let siswaHtml = data.siswa.map(siswa => `
+                        <div class="flex justify-between items-center p-3 hover:bg-gray-50 rounded">
+                            <span>${siswa.nama}</span>
+                            <div>
+                                <button class="btn-catatan-siswa text-blue-500 hover:text-blue-700 text-sm font-semibold mr-3" data-id="${siswa.id}" data-nama="${siswa.nama}" data-kelas-id="${kelasId}" data-nama-kelas="${data.namaKelas}">
+                                    Catatan
+                                </button>
+                                <button class="btn-hapus-siswa text-red-500 hover:text-red-700 text-sm font-semibold" data-id="${siswa.id}" data-nama="${siswa.nama}">
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
 
-                // BARU: Listener untuk tombol "Catatan"
-                document.querySelectorAll('.btn-lihat-catatan').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        handleLihatCatatan(e.currentTarget.dataset);
-                    });
-                });
+                    container.innerHTML += `
+                        <div class="mb-4">
+                            <h4 class="text-lg font-semibold mb-2 p-3 bg-gray-100 rounded-t-lg">${data.namaKelas || 'Tanpa Kelas'}</h4>
+                            <div class="bg-white border border-gray-100 rounded-b-lg divide-y divide-gray-100">
+                                ${siswaHtml}
+                            </div>
+                        </div>
+                    `;
+                }
 
                 document.querySelectorAll('.btn-hapus-siswa').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const { id, nama } = e.currentTarget.dataset;
-                        handleHapusSiswa(id, nama)
+                        handleHapusSiswa(id, nama);
+                    });
+                });
+                // BARU: Listener tombol catatan
+                document.querySelectorAll('.btn-catatan-siswa').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const { id, nama, kelasId, namaKelas } = e.currentTarget.dataset;
+                        handleBukaModalCatatan(id, nama, kelasId, namaKelas);
                     });
                 });
             });
@@ -915,7 +894,6 @@
             const namaSiswa = document.getElementById('input-nama-siswa').value.trim();
             const selectKelas = document.getElementById('select-kelas-siswa');
             const kelasId = selectKelas.value;
-            const namaKelas = selectKelas.options[selectKelas.selectedIndex].text;
             if (!namaSiswa || !kelasId) {
                 showNotification("Nama siswa dan kelas harus diisi.");
                 return;
@@ -923,29 +901,41 @@
             try {
                 await addDoc(collection(db, getPrivateCollectionPath('siswa')), {
                     nama: namaSiswa,
-                    kelasId: kelasId,
-                    namaKelas: namaKelas 
+                    kelasId: kelasId
                 });
                 showNotification("Siswa berhasil ditambahkan!");
-                document.getElementById('form-tambah-siswa').reset();
+                e.target.reset(); // Reset form
             } catch (error) {
                 console.error("Error tambah siswa:", error);
                 showNotification("Gagal menambahkan siswa.");
             }
         }
-
+        
         async function handleHapusSiswa(siswaId, namaSiswa) {
-            showConfirmation(`Apakah Anda yakin ingin menghapus siswa "${namaSiswa}"? Data nilai, absensi, dan catatan siswa ini juga akan dihapus.`, async () => {
+            showConfirmation(`Apakah Anda yakin ingin menghapus siswa "${namaSiswa}"? Data nilai dan absensi siswa ini juga akan dihapus.`, async () => {
                 try {
                     const batch = writeBatch(db);
+                    
+                    // 1. Hapus siswa
                     batch.delete(doc(db, getPrivateCollectionPath('siswa'), siswaId));
+                    
+                    // 2. Hapus nilai
                     batch.delete(doc(db, getPrivateCollectionPath('nilai'), siswaId));
                     
-                    const absensiQuery = query(collection(db, getPrivateCollectionPath('absensi')), where("siswaId", "==", siswaId));
+                    // 3. Hapus absensi (Ini lebih rumit jika disimpan per tanggal)
+                    // Untuk struktur saat ini (absensi/tanggal_kelasId), kita perlu query
+                    const absensiQuery = query(collection(db, getPrivateCollectionPath('absensi')));
                     const absensiSnap = await getDocs(absensiQuery);
-                    absensiSnap.forEach(doc => batch.delete(doc.ref));
+                    absensiSnap.forEach(docSnap => {
+                        const data = docSnap.data();
+                        if (data[siswaId]) {
+                            batch.update(docSnap.ref, {
+                                [siswaId]: deleteField() // Hapus field siswa dari dokumen absensi
+                            });
+                        }
+                    });
 
-                    // BARU: Hapus catatan
+                    // 4. BARU: Hapus catatan
                     const catatanQuery = query(collection(db, getPrivateCollectionPath('catatan_siswa')), where("siswaId", "==", siswaId));
                     const catatanSnap = await getDocs(catatanQuery);
                     catatanSnap.forEach(doc => batch.delete(doc.ref));
@@ -958,17 +948,19 @@
                 }
             });
         }
-
+        
         async function getNamaKelas(kelasId) {
+            if (!kelasId) return "Tanpa Kelas";
             try {
                 const docRef = doc(db, getPrivateCollectionPath('kelas'), kelasId);
                 const docSnap = await getDoc(docRef);
-                return docSnap.exists() ? docSnap.data().nama : "Kelas Tidak Ditemukan";
-            } catch (e) {
-                return "Error Kelas";
+                return docSnap.exists() ? docSnap.data().nama : "Kelas Dihapus";
+            } catch (error) {
+                console.error("Error get nama kelas:", error);
+                return "Error";
             }
         }
-
+        
         // === BAGIAN 3: JADWAL MENGAJAR === (Tidak berubah)
         function loadJadwal() {
             const jadwalRef = collection(db, getPrivateCollectionPath('jadwal'));
@@ -979,52 +971,51 @@
                     return;
                 }
                 container.innerHTML = '';
-                snapshot.forEach(docSnap => {
-                    const jadwal = docSnap.data();
+                snapshot.forEach(doc => {
+                    const jadwal = doc.data();
                     container.innerHTML += `
-                        <tr id="jadwal-${docSnap.id}">
+                        <tr>
                             <td class="px-6 py-4 whitespace-nowrap">${jadwal.hari}</td>
                             <td class="px-6 py-4 whitespace-nowrap">${jadwal.jamMulai} - ${jadwal.jamSelesai}</td>
                             <td class="px-6 py-4 whitespace-nowrap">${jadwal.namaKelas}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <button class="btn-hapus-jadwal text-red-500 hover:text-red-700" data-id="${docSnap.id}">Hapus</button>
+                                <button class="btn-hapus-jadwal text-red-500 hover:text-red-700 text-sm font-semibold" data-id="${doc.id}">Hapus</button>
                             </td>
                         </tr>
                     `;
                 });
                 document.querySelectorAll('.btn-hapus-jadwal').forEach(btn => {
-                    btn.addEventListener('click', (e) => handleHapusJadwal(e.target.dataset.id));
+                    btn.addEventListener('click', (e) => handleHapusJadwal(e.currentTarget.dataset.id));
                 });
             });
         }
-        
+
         async function handleTambahJadwal(e) {
             e.preventDefault();
-            const form = e.target;
             const selectKelas = document.getElementById('jadwal-kelas');
-            const data = {
+            const jadwal = {
                 hari: document.getElementById('jadwal-hari').value,
                 jamMulai: document.getElementById('jadwal-mulai').value,
                 jamSelesai: document.getElementById('jadwal-selesai').value,
                 kelasId: selectKelas.value,
-                namaKelas: selectKelas.options[selectKelas.selectedIndex].text
+                namaKelas: selectKelas.options[selectKelas.selectedIndex].dataset.nama
             };
-            if (!data.hari || !data.jamMulai || !data.jamSelesai || !data.kelasId) {
+            if (!jadwal.hari || !jadwal.jamMulai || !jadwal.jamSelesai || !jadwal.kelasId) {
                 showNotification("Semua field jadwal harus diisi.");
                 return;
             }
             try {
-                await addDoc(collection(db, getPrivateCollectionPath('jadwal')), data);
+                await addDoc(collection(db, getPrivateCollectionPath('jadwal')), jadwal);
                 showNotification("Jadwal berhasil ditambahkan.");
-                form.reset();
+                e.target.reset();
             } catch (error) {
                 console.error("Error tambah jadwal:", error);
-                showNotification("Gagal menambah jadwal.");
+                showNotification("Gagal menambahkan jadwal.");
             }
         }
 
         async function handleHapusJadwal(jadwalId) {
-            showConfirmation("Yakin ingin menghapus jadwal ini?", async () => {
+            showConfirmation("Apakah Anda yakin ingin menghapus jadwal ini?", async () => {
                 try {
                     await deleteDoc(doc(db, getPrivateCollectionPath('jadwal'), jadwalId));
                     showNotification("Jadwal berhasil dihapus.");
@@ -1040,213 +1031,173 @@
         async function handleTampilkanAbsensi() {
             const kelasId = document.getElementById('absensi-pilih-kelas').value;
             const tanggal = document.getElementById('absensi-pilih-tanggal').value;
+            const container = document.getElementById('daftar-absensi');
+            const btnContainer = document.getElementById('btn-simpan-absensi-container');
+
             if (!kelasId || !tanggal) {
-                showNotification("Pilih kelas dan tanggal terlebih dahulu.");
+                container.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Pilih kelas dan tanggal terlebih dahulu.</td></tr>';
+                btnContainer.classList.add('hidden');
                 return;
             }
-            const container = document.getElementById('daftar-absensi');
-            container.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Memuat siswa...</td></tr>';
+
+            container.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Memuat data siswa...</td></tr>';
+            
             try {
+                // 1. Dapatkan data absensi yang sudah ada (jika ada)
+                const absensiDocId = `${tanggal}_${kelasId}`;
+                const absensiRef = doc(db, getPrivateCollectionPath('absensi'), absensiDocId);
+                const absensiSnap = await getDoc(absensiRef);
+                const dataAbsensi = absensiSnap.exists() ? absensiSnap.data().status : {};
+
+                // 2. Dapatkan daftar siswa di kelas itu
                 const siswaRef = collection(db, getPrivateCollectionPath('siswa'));
-                const qSiswa = query(siswaRef, where("kelasId", "==", kelasId));
-                const siswaSnap = await getDocs(qSiswa);
-                const absensiRef = collection(db, getPrivateCollectionPath('absensi'));
-                const qAbsensi = query(absensiRef, where("kelasId", "==", kelasId), where("tanggal", "==", tanggal));
-                const absensiSnap = await getDocs(qAbsensi);
-                const absensiData = {};
-                absensiSnap.forEach(doc => {
-                    const absensi = doc.data();
-                    absensiData[absensi.siswaId] = { status: absensi.status, docId: doc.id };
-                });
+                const q = query(siswaRef, where("kelasId", "==", kelasId));
+                const siswaSnap = await getDocs(q);
+
                 if (siswaSnap.empty) {
                     container.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Tidak ada siswa di kelas ini.</td></tr>';
-                    document.getElementById('btn-simpan-absensi-container').classList.add('hidden');
+                    btnContainer.classList.add('hidden');
                     return;
                 }
+
                 container.innerHTML = '';
                 siswaSnap.forEach(docSnap => {
                     const siswa = docSnap.data();
                     const siswaId = docSnap.id;
-                    const absensi = absensiData[siswaId];
-                    const status = absensi ? absensi.status : 'Hadir';
-                    const docId = absensi ? absensi.docId : '';
+                    const status = dataAbsensi[siswaId] || 'Hadir'; // Default 'Hadir'
+
                     container.innerHTML += `
-                        <tr class="siswa-absen-row" data-siswa-id="${siswaId}" data-nama-siswa="${siswa.nama}" data-absen-doc-id="${docId}">
+                        <tr class="siswa-absensi-row" data-siswa-id="${siswaId}">
                             <td class="px-6 py-4 whitespace-nowrap">${siswa.nama}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex flex-wrap gap-x-4 gap-y-2">
-                                    <label><input type="radio" name="status-${siswaId}" value="Hadir" ${status === 'Hadir' ? 'checked' : ''} class="mr-1"> Hadir</label>
-                                    <label><input type="radio" name="status-${siswaId}" value="Izin" ${status === 'Izin' ? 'checked' : ''} class="mr-1"> Izin</label>
-                                    <label><input type="radio" name="status-${siswaId}" value="Sakit" ${status === 'Sakit' ? 'checked' : ''} class="mr-1"> Sakit</label>
-                                    <label><input type="radio" name="status-${siswaId}" value="Alfa" ${status === 'Alfa' ? 'checked' : ''} class="mr-1"> Alfa</label>
-                                </div>
+                            <td class="px-6 py-4">
+                                <select class="select-status p-2 border rounded w-full md:w-auto">
+                                    <option value="Hadir" ${status === 'Hadir' ? 'selected' : ''}>Hadir</option>
+                                    <option value="Izin" ${status === 'Izin' ? 'selected' : ''}>Izin</option>
+                                    <option value="Sakit" ${status === 'Sakit' ? 'selected' : ''}>Sakit</option>
+                                    <option value="Alfa" ${status === 'Alfa' ? 'selected' : ''}>Alfa</option>
+                                </select>
                             </td>
                         </tr>
                     `;
                 });
-                document.getElementById('btn-simpan-absensi-container').classList.remove('hidden');
+                
+                btnContainer.classList.remove('hidden');
+
             } catch (error) {
                 console.error("Error tampilkan absensi:", error);
-                showNotification("Gagal memuat data absensi.");
+                container.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-red-500">Gagal memuat data.</td></tr>';
+                btnContainer.classList.add('hidden');
             }
         }
 
         async function handleSimpanAbsensi() {
-            const rows = document.querySelectorAll('.siswa-absen-row');
             const kelasId = document.getElementById('absensi-pilih-kelas').value;
             const tanggal = document.getElementById('absensi-pilih-tanggal').value;
-            if (!kelasId || !tanggal) return;
+            if (!kelasId || !tanggal) {
+                showNotification("Kelas atau tanggal tidak valid.");
+                return;
+            }
+
+            const absensiDocId = `${tanggal}_${kelasId}`;
+            const absensiRef = doc(db, getPrivateCollectionPath('absensi'), absensiDocId);
+            
+            const statusData = {};
+            document.querySelectorAll('.siswa-absensi-row').forEach(row => {
+                const siswaId = row.dataset.siswaId;
+                const status = row.querySelector('.select-status').value;
+                statusData[siswaId] = status;
+            });
+
             try {
-                const batch = writeBatch(db); 
-                for (const row of rows) {
-                    const siswaId = row.dataset.siswaId;
-                    const namaSiswa = row.dataset.namaSiswa;
-                    const docId = row.dataset.absenDocId;
-                    const status = row.querySelector(`input[name="status-${siswaId}"]:checked`).value;
-                    const data = {
-                        siswaId: siswaId,
-                        namaSiswa: namaSiswa, 
-                        kelasId: kelasId,
-                        tanggal: tanggal,
-                        status: status
-                    };
-                    if (docId) {
-                        batch.update(doc(db, getPrivateCollectionPath('absensi'), docId), data);
-                    } else {
-                        const newDocRef = doc(collection(db, getPrivateCollectionPath('absensi')));
-                        batch.set(newDocRef, data);
-                        row.dataset.absenDocId = newDocRef.id; 
-                    }
-                }
-                await batch.commit();
-                showNotification("Data absensi berhasil disimpan!");
+                await setDoc(absensiRef, {
+                    tanggal: tanggal,
+                    kelasId: kelasId,
+                    status: statusData
+                }, { merge: true }); // merge: true agar tidak menimpa data lain jika ada
+                showNotification("Absensi berhasil disimpan!");
             } catch (error) {
                 console.error("Error simpan absensi:", error);
                 showNotification("Gagal menyimpan absensi.");
             }
         }
+        
 
-
-        // === BAGIAN 5: INPUT NILAI === (Tidak berubah)
-        async function handleTampilkanNilai() {
-            const kelasId = document.getElementById('nilai-pilih-kelas').value;
-            if (!kelasId) {
-                showNotification("Pilih kelas terlebih dahulu.");
-                return;
-            }
-            const container = document.getElementById('daftar-nilai');
-            container.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Memuat siswa...</td></tr>';
-            try {
-                const siswaRef = collection(db, getPrivateCollectionPath('siswa'));
-                const qSiswa = query(siswaRef, where("kelasId", "==", kelasId));
-                const siswaSnap = await getDocs(qSiswa);
-                if (siswaSnap.empty) {
-                    container.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada siswa di kelas ini.</td></tr>';
-                    return;
-                }
-                container.innerHTML = '';
-                for (const docSnap of siswaSnap.docs) {
-                    const siswa = docSnap.data();
-                    const siswaId = docSnap.id;
-                    const nilaiRef = doc(db, getPrivateCollectionPath('nilai'), siswaId);
-                    const nilaiSnap = await getDoc(nilaiRef);
-                    const nilai = nilaiSnap.exists() ? nilaiSnap.data() : {};
-                    container.innerHTML += `
-                        <tr class="siswa-nilai-row" data-siswa-id="${siswaId}" data-nama-siswa="${siswa.nama}">
-                            <td class="px-6 py-4 whitespace-nowrap">${siswa.nama}</td>
-                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="tugas1" value="${nilai.tugas1 || ''}"></td>
-                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="tugas2" value="${nilai.tugas2 || ''}"></td>
-                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="uts" value="${nilai.uts || ''}"></td>
-                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="uas" value="${nilai.uas || ''}"></td>
-                            <td class="px-6 py-2">
-                                <button class="btn-simpan-nilai-siswa bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600" data-siswa-id="${siswaId}">Simpan</button>
-                            </td>
-                        </tr>
-                    `;
-                }
-                document.querySelectorAll('.btn-simpan-nilai-siswa').forEach(btn => {
-                    btn.addEventListener('click', (e) => handleSimpanNilaiSiswa(e.target.dataset.siswaId));
-                });
-            } catch (error) {
-                console.error("Error tampilkan nilai:", error);
-                showNotification("Gagal memuat data nilai.");
-            }
-        }
-
-        async function handleSimpanNilaiSiswa(siswaId) {
-            const row = document.querySelector(`.siswa-nilai-row[data-siswa-id="${siswaId}"]`);
-            if (!row) return;
-            const kelasId = document.getElementById('nilai-pilih-kelas').value;
-            const namaSiswa = row.dataset.namaSiswa;
-            const dataNilai = {
-                tugas1: row.querySelector('[data-jenis="tugas1"]').valueAsNumber || 0,
-                tugas2: row.querySelector('[data-jenis="tugas2"]').valueAsNumber || 0,
-                uts: row.querySelector('[data-jenis="uts"]').valueAsNumber || 0,
-                uas: row.querySelector('[data-jenis="uas"]').valueAsNumber || 0,
-                siswaId: siswaId,
-                namaSiswa: namaSiswa,
-                kelasId: kelasId,
-                namaKelas: document.getElementById('nilai-pilih-kelas').options[document.getElementById('nilai-pilih-kelas').selectedIndex].text
-            };
-            try {
-                const docRef = doc(db, getPrivateCollectionPath('nilai'), siswaId);
-                await setDoc(docRef, dataNilai, { merge: true }); 
-                showNotification(`Nilai for ${namaSiswa} berhasil disimpan.`);
-            } catch (error) {
-                console.error("Error simpan nilai:", error);
-                showNotification("Gagal menyimpan nilai.");
-            }
-        }
-
-        // === BAGIAN 6: PERKEMBANGAN MATERI === (Tidak berubah)
+        // === BAGIAN 5: PERKEMBANGAN MATERI === (Tidak berubah)
         function loadMateri() {
             const materiRef = collection(db, getPrivateCollectionPath('materi'));
-            onSnapshot(materiRef, (snapshot) => {
+            onSnapshot(materiRef, async (snapshot) => {
                 const container = document.getElementById('daftar-materi-container');
                 if (snapshot.empty) {
                     container.innerHTML = '<p class="text-gray-500">Belum ada riwayat materi.</p>';
                     return;
                 }
+                
                 container.innerHTML = '';
-                snapshot.forEach(docSnap => {
+                const materiByKelas = {};
+
+                // Kelompokkan materi berdasarkan kelasId
+                for (const docSnap of snapshot.docs) {
                     const materi = docSnap.data();
-                    container.innerHTML += `
-                        <div class="border p-4 rounded-lg bg-gray-50">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-semibold text-lg">${materi.topik}</h4>
-                                <button class="btn-hapus-materi text-red-500 hover:text-red-700 text-sm" data-id="${docSnap.id}">Hapus</button>
+                    const kelasId = materi.kelasId;
+                    if (!materiByKelas[kelasId]) {
+                        materiByKelas[kelasId] = {
+                            namaKelas: await getNamaKelas(kelasId),
+                            materi: []
+                        };
+                    }
+                    materiByKelas[kelasId].materi.push({ id: docSnap.id, ...materi });
+                }
+
+                // Tampilkan per kelas
+                for (const kelasId in materiByKelas) {
+                    const data = materiByKelas[kelasId];
+                    // Urutkan materi berdasarkan tanggal (terbaru dulu)
+                    data.materi.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+                    
+                    let materiHtml = data.materi.map(m => `
+                        <div class="p-3 border-b last:border-b-0">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-semibold text-blue-800">${m.topik}</span>
+                                <span class="text-sm text-gray-500">${m.tanggal}</span>
                             </div>
-                            <p class="text-sm text-gray-600"><strong>Kelas:</strong> ${materi.namaKelas} | <strong>Tanggal:</strong> ${materi.tanggal}</p>
-                            <p class="mt-2 text-gray-700">${materi.catatan}</p>
+                            <p class="text-gray-700 mb-2">${m.catatan || 'Tidak ada catatan.'}</p>
+                            <button class="btn-hapus-materi text-red-500 hover:text-red-700 text-xs font-semibold" data-id="${m.id}">Hapus</button>
+                        </div>
+                    `).join('');
+
+                    container.innerHTML += `
+                        <div class="mb-4 bg-white shadow rounded-lg overflow-hidden">
+                            <h4 class="text-lg font-semibold mb-2 p-3 bg-gray-100">${data.namaKelas || 'Tanpa Kelas'}</h4>
+                            <div class="divide-y divide-gray-100">
+                                ${materiHtml}
+                            </div>
                         </div>
                     `;
-                });
+                }
+
                 document.querySelectorAll('.btn-hapus-materi').forEach(btn => {
-                    btn.addEventListener('click', (e) => handleHapusMateri(e.target.dataset.id));
+                    btn.addEventListener('click', (e) => handleHapusMateri(e.currentTarget.dataset.id));
                 });
             });
         }
 
         async function handleTambahMateri(e) {
             e.preventDefault();
-            const form = e.target;
-            const selectKelas = document.getElementById('materi-pilih-kelas');
-            const data = {
-                kelasId: selectKelas.value,
-                namaKelas: selectKelas.options[selectKelas.selectedIndex].text,
+            const materi = {
+                kelasId: document.getElementById('materi-pilih-kelas').value,
                 tanggal: document.getElementById('materi-tanggal').value,
                 topik: document.getElementById('materi-topik').value.trim(),
                 catatan: document.getElementById('materi-catatan').value.trim()
             };
-            if (!data.kelasId || !data.tanggal || !data.topik) {
+            if (!materi.kelasId || !materi.tanggal || !materi.topik) {
                 showNotification("Kelas, tanggal, dan topik harus diisi.");
                 return;
             }
             try {
-                await addDoc(collection(db, getPrivateCollectionPath('materi')), data);
-                showNotification("Catatan materi berhasil disimpan.");
-                form.reset();
-                setInitialDate();
+                await addDoc(collection(db, getPrivateCollectionPath('materi')), materi);
+                showNotification("Materi berhasil disimpan.");
+                e.target.reset();
+                setInitialDate(); // Kembalikan tanggal ke hari ini
             } catch (error) {
                 console.error("Error tambah materi:", error);
                 showNotification("Gagal menyimpan materi.");
@@ -1254,10 +1205,10 @@
         }
         
         async function handleHapusMateri(materiId) {
-             showConfirmation("Yakin ingin menghapus catatan materi ini?", async () => {
+            showConfirmation("Apakah Anda yakin ingin menghapus catatan materi ini?", async () => {
                 try {
                     await deleteDoc(doc(db, getPrivateCollectionPath('materi'), materiId));
-                    showNotification("Catatan materi berhasil dihapus.");
+                    showNotification("Materi berhasil dihapus.");
                 } catch (error) {
                     console.error("Error hapus materi:", error);
                     showNotification("Gagal menghapus materi.");
@@ -1265,60 +1216,198 @@
             });
         }
 
-        // === BARU: BAGIAN 7: BANK SUMBER BELAJAR ===
-        
+
+        async function handleTampilkanNilai() {
+            const kelasId = document.getElementById('nilai-pilih-kelas').value;
+            const container = document.getElementById('daftar-nilai');
+            
+            // Ganti colspan="6" menjadi "16"
+            if (!kelasId) {
+                container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Pilih kelas terlebih dahulu.</td></tr>';
+                return;
+            }
+            // Ganti colspan="6" menjadi "16"
+            container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Memuat data siswa...</td></tr>';
+            
+            try {
+                const siswaRef = collection(db, getPrivateCollectionPath('siswa'));
+                const q = query(siswaRef, where("kelasId", "==", kelasId));
+                const siswaSnap = await getDocs(q);
+                
+                // Ganti colspan="6" menjadi "16"
+                if (siswaSnap.empty) {
+                    container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Tidak ada siswa di kelas ini.</td></tr>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                for (const docSnap of siswaSnap.docs) {
+                    const siswa = docSnap.data();
+                    const siswaId = docSnap.id;
+                    const nilaiRef = doc(db, getPrivateCollectionPath('nilai'), siswaId);
+                    const nilaiSnap = await getDoc(nilaiRef);
+                    const nilai = nilaiSnap.exists() ? nilaiSnap.data() : {};
+
+                    // Buat string HTML untuk input Tugas 1-10
+                    let tugasInputsHtml = '';
+                    for (let i = 1; i <= 10; i++) {
+                        tugasInputsHtml += `<td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="tugas${i}" value="${nilai[`tugas${i}`] || ''}"></td>`;
+                    }
+
+                    // Gabungkan semua input (Tugas 1-10, UTS 1-2, UAS 1-2)
+                    container.innerHTML += `
+                        <tr class="siswa-nilai-row" data-siswa-id="${siswaId}" data-nama-siswa="${siswa.nama}">
+                            <td class="px-6 py-4 whitespace-nowrap">${siswa.nama}</td>
+                            ${tugasInputsHtml}
+                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="uts1" value="${nilai.uts1 || ''}"></td>
+                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="uts2" value="${nilai.uts2 || ''}"></td>
+                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="uas1" value="${nilai.uas1 || ''}"></td>
+                            <td class="px-6 py-2"><input type="number" class="input-nilai w-20 p-1 border rounded" data-jenis="uas2" value="${nilai.uas2 || ''}"></td>
+                            <td class="px-6 py-2">
+                                <button class="btn-simpan-nilai-siswa bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600" data-siswa-id="${siswaId}">Simpan</button>
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                document.querySelectorAll('.btn-simpan-nilai-siswa').forEach(btn => {
+                    btn.addEventListener('click', (e) => handleSimpanNilaiSiswa(e.currentTarget.dataset.siswaId));
+                });
+            } catch (error) {
+                console.error("Error tampilkan nilai:", error);
+                // Ganti colspan="6" menjadi "16"
+                container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-red-500">Gagal memuat data.</td></tr>';
+            }
+        }
+
+        async function handleSimpanNilaiSiswa(siswaId) {
+            const row = document.querySelector(`.siswa-nilai-row[data-siswa-id="${siswaId}"]`);
+            if (!row) return;
+
+            const namaSiswa = row.dataset.namaSiswa;
+            const kelasId = document.getElementById('nilai-pilih-kelas').value;
+
+            // Ganti objek dataNilai
+            const dataNilai = {
+                // Data UTS dan UAS
+                uts1: row.querySelector('[data-jenis="uts1"]').valueAsNumber || 0,
+                uts2: row.querySelector('[data-jenis="uts2"]').valueAsNumber || 0,
+                uas1: row.querySelector('[data-jenis="uas1"]').valueAsNumber || 0,
+                uas2: row.querySelector('[data-jenis="uas2"]').valueAsNumber || 0,
+                // Metadata siswa
+                siswaId: siswaId,
+                namaSiswa: namaSiswa,
+                kelasId: kelasId,
+                namaKelas: document.getElementById('nilai-pilih-kelas').options[document.getElementById('nilai-pilih-kelas').selectedIndex].text
+            };
+
+            // Tambahkan Tugas 1-10 menggunakan loop
+            for (let i = 1; i <= 10; i++) {
+                dataNilai[`tugas${i}`] = row.querySelector(`[data-jenis="tugas${i}"]`).valueAsNumber || 0;
+            }
+
+            // Simpan ke Firebase (logika setDoc tidak berubah)
+            try {
+                const nilaiRef = doc(db, getPrivateCollectionPath('nilai'), siswaId);
+                await setDoc(nilaiRef, dataNilai); 
+                
+                // Beri feedback visual
+                const btn = row.querySelector('.btn-simpan-nilai-siswa');
+                btn.textContent = 'Tersimpan!';
+                btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                btn.classList.add('bg-blue-500');
+                setTimeout(() => {
+                    btn.textContent = 'Simpan';
+                    btn.classList.remove('bg-blue-500');
+                    btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                }, 2000);
+
+            } catch (error) {
+                console.error("Error simpan nilai:", error);
+                showNotification(`Gagal menyimpan nilai untuk ${namaSiswa}.`);
+            }
+        }
+
+
         function loadSumberBelajar() {
             const sumberRef = collection(db, getPrivateCollectionPath('sumber_belajar'));
-            onSnapshot(sumberRef, (snapshot) => {
+            onSnapshot(sumberRef, async (snapshot) => {
                 const container = document.getElementById('daftar-sumber-belajar');
                 if (snapshot.empty) {
                     container.innerHTML = '<p class="text-gray-500">Belum ada sumber belajar tersimpan.</p>';
                     return;
                 }
+                
                 container.innerHTML = '';
-                snapshot.forEach(docSnap => {
+                const sumberByKelas = {};
+
+                // Kelompokkan materi berdasarkan kelasId
+                for (const docSnap of snapshot.docs) {
                     const sumber = docSnap.data();
-                    container.innerHTML += `
-                        <div class="border p-4 rounded-lg bg-gray-50">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-semibold text-lg">${sumber.judul}</h4>
-                                    <span class="text-xs font-medium ${sumber.kelasId === 'semua' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'} px-2 py-0.5 rounded-full">${sumber.namaKelas}</span>
-                                    <p class="text-sm text-gray-600 mt-2">${sumber.deskripsi}</p>
-                                </div>
-                                <button class="btn-hapus-sumber text-red-500 hover:text-red-700 text-sm flex-shrink-0 ml-4" data-id="${docSnap.id}">Hapus</button>
+                    const kelasId = sumber.kelasId || 'semua'; // Kelompokkan "semua"
+                    
+                    if (!sumberByKelas[kelasId]) {
+                        sumberByKelas[kelasId] = {
+                            namaKelas: kelasId === 'semua' ? 'Semua Kelas' : await getNamaKelas(kelasId),
+                            sumber: []
+                        };
+                    }
+                    sumberByKelas[kelasId].sumber.push({ id: docSnap.id, ...sumber });
+                }
+
+                // Tampilkan per kelas
+                for (const kelasId in sumberByKelas) {
+                    const data = sumberByKelas[kelasId];
+                    let sumberHtml = data.sumber.map(s => `
+                        <div class="p-4 border-b last:border-b-0">
+                            <div class="flex justify-between items-start mb-1">
+                                <a href="${s.link}" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-700 hover:underline">${s.judul}</a>
+                                <button class="btn-hapus-sumber text-red-500 hover:text-red-700 text-xs font-semibold" data-id="${s.id}">Hapus</button>
                             </div>
-                            <a href="${sumber.link}" target="_blank" rel="noopener noreferrer" class="inline-block mt-3 bg-blue-600 text-white px-4 py-1 rounded-lg text-sm font-semibold hover:bg-blue-700">
-                                Kunjungi Link
-                            </a>
+                            <p class="text-gray-600 text-sm mb-2">${s.deskripsi || 'Tidak ada deskripsi.'}</p>
+                            <a href="${s.link}" target="_blank" rel="noopener noreferrer" class="text-xs text-gray-500 truncate block hover:underline">${s.link}</a>
+                        </div>
+                    `).join('');
+
+                    container.innerHTML += `
+                        <div class="mb-4 bg-white shadow rounded-lg overflow-hidden">
+                            <h4 class="text-lg font-semibold p-3 bg-gray-100">${data.namaKelas || 'Kelas Dihapus'}</h4>
+                            <div class="divide-y divide-gray-100">
+                                ${sumberHtml}
+                            </div>
                         </div>
                     `;
-                });
+                }
+
                 document.querySelectorAll('.btn-hapus-sumber').forEach(btn => {
-                    btn.addEventListener('click', (e) => handleHapusSumber(e.target.dataset.id));
+                    btn.addEventListener('click', (e) => handleHapusSumber(e.currentTarget.dataset.id));
                 });
             });
         }
 
         async function handleTambahSumber(e) {
             e.preventDefault();
-            const form = e.target;
             const selectKelas = document.getElementById('sumber-belajar-pilih-kelas');
-            const data = {
+            const kelasId = selectKelas.value;
+            const namaKelas = kelasId === 'semua' ? 'Semua Kelas' : selectKelas.options[selectKelas.selectedIndex].dataset.nama;
+
+            const sumber = {
                 judul: document.getElementById('sumber-judul').value.trim(),
                 link: document.getElementById('sumber-link').value.trim(),
                 deskripsi: document.getElementById('sumber-deskripsi').value.trim(),
-                kelasId: selectKelas.value,
-                namaKelas: selectKelas.options[selectKelas.selectedIndex].text
+                kelasId: kelasId,
+                namaKelas: namaKelas
             };
-            if (!data.judul || !data.link) {
+
+            if (!sumber.judul || !sumber.link) {
                 showNotification("Judul dan Link harus diisi.");
                 return;
             }
+
             try {
-                await addDoc(collection(db, getPrivateCollectionPath('sumber_belajar')), data);
+                await addDoc(collection(db, getPrivateCollectionPath('sumber_belajar')), sumber);
                 showNotification("Sumber belajar berhasil disimpan.");
-                form.reset();
+                e.target.reset();
             } catch (error) {
                 console.error("Error tambah sumber:", error);
                 showNotification("Gagal menyimpan sumber belajar.");
@@ -1326,113 +1415,109 @@
         }
         
         async function handleHapusSumber(sumberId) {
-             showConfirmation("Yakin ingin menghapus sumber belajar ini?", async () => {
+            showConfirmation("Apakah Anda yakin ingin menghapus sumber belajar ini?", async () => {
                 try {
                     await deleteDoc(doc(db, getPrivateCollectionPath('sumber_belajar'), sumberId));
                     showNotification("Sumber belajar berhasil dihapus.");
                 } catch (error) {
                     console.error("Error hapus sumber:", error);
-                    showNotification("Gagal menghapus sumber.");
+                    showNotification("Gagal menghapus sumber belajar.");
                 }
             });
         }
 
-        // === BARU: BAGIAN 8: CATATAN PERKEMBANGAN SISWA ===
-        
-        // Dipanggil saat tombol "Catatan" diklik
-        async function handleLihatCatatan(dataset) {
-            const { siswaId, namaSiswa, kelasId, namaKelas } = dataset;
-            
-            // Isi data ke modal
-            document.getElementById('catatan-modal-title').textContent = `Catatan untuk ${namaSiswa}`;
+
+        async function handleBukaModalCatatan(siswaId, namaSiswa, kelasId, namaKelas) {
+            // Set data ke modal
+            document.getElementById('catatan-modal-title').textContent = `Catatan Perkembangan: ${namaSiswa}`;
             document.getElementById('catatan-modal-siswaId').value = siswaId;
             document.getElementById('catatan-modal-namaSiswa').value = namaSiswa;
             document.getElementById('catatan-modal-kelasId').value = kelasId;
             document.getElementById('catatan-modal-namaKelas').value = namaKelas;
-            
-            // Muat catatan
-            await loadCatatanSiswa(siswaId);
-            
+            document.getElementById('catatan-modal-input').value = '';
+
             // Tampilkan modal
             catatanModal.classList.remove('hidden');
-        }
 
-        // Memuat riwayat catatan ke dalam modal
-        async function loadCatatanSiswa(siswaId) {
-            const container = document.getElementById('catatan-modal-list');
-            container.innerHTML = '<p class="text-gray-500">Memuat catatan...</p>';
-            
+            // Load riwayat catatan
+            const listContainer = document.getElementById('catatan-modal-list');
+            listContainer.innerHTML = '<p class="text-gray-500">Memuat catatan...</p>';
+
             try {
                 const catatanRef = collection(db, getPrivateCollectionPath('catatan_siswa'));
                 const q = query(catatanRef, where("siswaId", "==", siswaId));
                 const snapshot = await getDocs(q);
-                
+
                 if (snapshot.empty) {
-                    container.innerHTML = '<p class="text-gray-500">Belum ada catatan.</p>';
+                    listContainer.innerHTML = '<p class="text-gray-500">Belum ada catatan.</p>';
                     return;
                 }
+
+                listContainer.innerHTML = '';
+                let catatanList = [];
+                snapshot.forEach(doc => {
+                    catatanList.push({ id: doc.id, ...doc.data() });
+                });
                 
-                container.innerHTML = '';
-                snapshot.forEach(docSnap => {
-                    const catatan = docSnap.data();
-                    container.innerHTML += `
-                        <div class="border-b pb-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-semibold text-gray-600">${catatan.tanggal}</span>
-                                <button class="btn-hapus-catatan text-red-500 hover:text-red-700 text-xs" data-id="${docSnap.id}" data-siswa-id="${siswaId}">Hapus</button>
+                // Urutkan (terbaru dulu)
+                catatanList.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+
+                catatanList.forEach(catatan => {
+                    listContainer.innerHTML += `
+                        <div class="bg-gray-50 p-3 rounded-lg border">
+                            <p class="text-gray-700">${catatan.teks}</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs text-gray-500">${catatan.tanggal}</span>
+                                <button class="btn-hapus-catatan text-red-500 hover:text-red-700 text-xs font-semibold" data-id="${catatan.id}">Hapus</button>
                             </div>
-                            <p class="text-gray-800">${catatan.catatan}</p>
                         </div>
                     `;
                 });
-                
-                // Tambahkan listener ke tombol hapus
-                container.querySelectorAll('.btn-hapus-catatan').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        handleHapusCatatan(e.target.dataset.id, e.target.dataset.siswaId);
-                    });
+
+                document.querySelectorAll('.btn-hapus-catatan').forEach(btn => {
+                    btn.addEventListener('click', (e) => handleHapusCatatan(e.currentTarget.dataset.id));
                 });
-                
+
             } catch (error) {
-                console.error("Error muat catatan siswa:", error);
-                container.innerHTML = '<p class="text-red-500">Gagal memuat catatan.</p>';
+                console.error("Error load catatan:", error);
+                listContainer.innerHTML = '<p class="text-red-500">Gagal memuat catatan.</p>';
             }
         }
 
-        // Menyimpan catatan baru dari modal
         async function handleTambahCatatan(e) {
             e.preventDefault();
-            const input = document.getElementById('catatan-modal-input');
-            const catatan = input.value.trim();
-            if (!catatan) return;
-            
-            const siswaId = document.getElementById('catatan-modal-siswaId').value;
-            
-            const data = {
-                catatan: catatan,
-                siswaId: siswaId,
+            const teks = document.getElementById('catatan-modal-input').value.trim();
+            if (!teks) return;
+
+            const catatan = {
+                siswaId: document.getElementById('catatan-modal-siswaId').value,
                 namaSiswa: document.getElementById('catatan-modal-namaSiswa').value,
                 kelasId: document.getElementById('catatan-modal-kelasId').value,
                 namaKelas: document.getElementById('catatan-modal-namaKelas').value,
-                tanggal: new Date().toISOString().split('T')[0]
+                teks: teks,
+                tanggal: new Date().toISOString().split('T')[0] // Tanggal hari ini
             };
-            
+
             try {
-                await addDoc(collection(db, getPrivateCollectionPath('catatan_siswa')), data);
-                input.value = ''; // Kosongkan input
-                await loadCatatanSiswa(siswaId); // Muat ulang daftar catatan di modal
+                await addDoc(collection(db, getPrivateCollectionPath('catatan_siswa')), catatan);
+                // Muat ulang daftar catatan di modal
+                handleBukaModalCatatan(catatan.siswaId, catatan.namaSiswa, catatan.kelasId, catatan.namaKelas);
             } catch (error) {
                 console.error("Error tambah catatan:", error);
                 showNotification("Gagal menyimpan catatan.");
             }
         }
-        
-        // Menghapus satu catatan
-        async function handleHapusCatatan(catatanId, siswaId) {
-             // Tidak perlu konfirmasi, risiko rendah
+
+        async function handleHapusCatatan(catatanId) {
+            // Tidak perlu konfirmasi agar cepat
             try {
                 await deleteDoc(doc(db, getPrivateCollectionPath('catatan_siswa'), catatanId));
-                await loadCatatanSiswa(siswaId); // Muat ulang daftar
+                // Muat ulang daftar catatan (ambil data dari modal)
+                const siswaId = document.getElementById('catatan-modal-siswaId').value;
+                const namaSiswa = document.getElementById('catatan-modal-namaSiswa').value;
+                const kelasId = document.getElementById('catatan-modal-kelasId').value;
+                const namaKelas = document.getElementById('catatan-modal-namaKelas').value;
+                handleBukaModalCatatan(siswaId, namaSiswa, kelasId, namaKelas);
             } catch (error) {
                 console.error("Error hapus catatan:", error);
                 showNotification("Gagal menghapus catatan.");
@@ -1440,34 +1525,36 @@
         }
 
 
-        // === BAGIAN 9: LAPORAN === (Sebelumnya Bagian 7)
-        
         async function handleBuatLaporan() {
             const tipe = document.getElementById('laporan-tipe').value;
             const kelasId = document.getElementById('laporan-pilih-kelas').value;
-            const outputContainer = document.getElementById('laporan-output');
-            outputContainer.innerHTML = '<p class="text-gray-500">Membuat laporan...</p>';
+            const container = document.getElementById('laporan-output');
+            container.innerHTML = '<p class="text-gray-500">Membuat laporan...</p>';
+
             if (tipe === 'nilai') {
-                await buatLaporanNilai(kelasId, outputContainer);
+                await buatLaporanNilai(kelasId, container);
             } else if (tipe === 'absensi') {
-                await buatLaporanAbsensi(kelasId, outputContainer);
+                await buatLaporanAbsensi(kelasId, container);
             }
         }
 
+        // FUNGSI INI BERUBAH
         async function buatLaporanNilai(kelasId, container) {
             try {
-                let q;
                 const nilaiRef = collection(db, getPrivateCollectionPath('nilai'));
+                let q;
                 if (kelasId) {
                     q = query(nilaiRef, where("kelasId", "==", kelasId));
                 } else {
-                    q = query(nilaif); 
+                    q = query(nilaiRef); 
                 }
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) {
-                    container.innerHTML = '<p class="text-gray-500">Tidak ada data nilai untuk laporan ini.</p>';
+                    container.innerHTML = '<p class="text-gray-500">Tidak ada data nilai untuk laporan.</p>';
                     return;
                 }
+                
+                // Ganti Header Tabel (T1-T10, UTS1-2, UAS1-2)
                 let tableHtml = `<h3 class="text-xl font-semibold mb-4">Laporan Nilai</h3>
                     <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -1475,70 +1562,115 @@
                             <tr>
                                 <th class="px-4 py-2 text-left">Nama</th>
                                 <th class="px-4 py-2 text-left">Kelas</th>
-                                <th class="px-4 py-2 text-left">Tugas 1</th>
-                                <th class="px-4 py-2 text-left">Tugas 2</th>
-                                <th class="px-4 py-2 text-left">UTS</th>
-                                <th class="px-4 py-2 text-left">UAS</th>
+                                <th class="px-4 py-2 text-left">T1</th>
+                                <th class="px-4 py-2 text-left">T2</th>
+                                <th class="px-4 py-2 text-left">T3</th>
+                                <th class="px-4 py-2 text-left">T4</th>
+                                <th class="px-4 py-2 text-left">T5</th>
+                                <th class="px-4 py-2 text-left">T6</th>
+                                <th class="px-4 py-2 text-left">T7</th>
+                                <th class="px-4 py-2 text-left">T8</th>
+                                <th class="px-4 py-2 text-left">T9</th>
+                                <th class="px-4 py-2 text-left">T10</th>
+                                <th class="px-4 py-2 text-left">UTS1</th>
+                                <th class="px-4 py-2 text-left">UTS2</th>
+                                <th class="px-4 py-2 text-left">UAS1</th>
+                                <th class="px-4 py-2 text-left">UAS2</th>
                                 <th class="px-4 py-2 text-left">Rata-rata</th>
                             </tr>
                         </thead>
                         <tbody>`;
+
+                // Ganti Logika Kalkulasi dan Tampilan
                 snapshot.forEach(docSnap => {
                     const nilai = docSnap.data();
-                    const avg = ((nilai.tugas1 || 0) + (nilai.tugas2 || 0) + (nilai.uts || 0) + (nilai.uas || 0)) / 4;
+                    
+                    // Kalkulasi rata-rata baru (total 14 nilai)
+                    let totalTugas = 0;
+                    for (let i = 1; i <= 10; i++) {
+                        totalTugas += (nilai[`tugas${i}`] || 0);
+                    }
+                    const totalUtsUas = (nilai.uts1 || 0) + (nilai.uts2 || 0) + (nilai.uas1 || 0) + (nilai.uas2 || 0);
+                    const avg = (totalTugas + totalUtsUas) / 14;
+
+                    // Buat sel tabel untuk Tugas 1-10
+                    let tugasCells = '';
+                    for (let i = 1; i <= 10; i++) {
+                        tugasCells += `<td class="px-4 py-2">${nilai[`tugas${i}`] || 0}</td>`;
+                    }
+
+                    // Gabungkan semua sel
                     tableHtml += `
                         <tr>
                             <td class="px-4 py-2">${nilai.namaSiswa}</td>
                             <td class="px-4 py-2">${nilai.namaKelas}</td>
-                            <td class="px-4 py-2">${nilai.tugas1 || 0}</td>
-                            <td class="px-4 py-2">${nilai.tugas2 || 0}</td>
-                            <td class="px-4 py-2">${nilai.uts || 0}</td>
-                            <td class="px-4 py-2">${nilai.uas || 0}</td>
+                            ${tugasCells}
+                            <td class="px-4 py-2">${nilai.uts1 || 0}</td>
+                            <td class="px-4 py-2">${nilai.uts2 || 0}</td>
+                            <td class="px-4 py-2">${nilai.uas1 || 0}</td>
+                            <td class="px-4 py-2">${nilai.uas2 || 0}</td>
                             <td class="px-4 py-2 font-semibold">${avg.toFixed(2)}</td>
                         </tr>
                     `;
                 });
+
                 tableHtml += '</tbody></table></div>';
                 container.innerHTML = tableHtml;
+
             } catch (error) {
                 console.error("Error buat laporan nilai:", error);
                 container.innerHTML = '<p class="text-red-500">Gagal membuat laporan nilai.</p>';
             }
         }
 
+        // FUNGSI INI TIDAK BERUBAH
         async function buatLaporanAbsensi(kelasId, container) {
             try {
-                let q;
                 const absensiRef = collection(db, getPrivateCollectionPath('absensi'));
+                let q;
                 if (kelasId) {
                     q = query(absensiRef, where("kelasId", "==", kelasId));
                 } else {
-                    q = query(absensiRef); 
+                    q = query(absensiRef);
                 }
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) {
-                    container.innerHTML = '<p class="text-gray-500">Tidak ada data absensi untuk laporan ini.</p>';
+                    container.innerHTML = '<p class="text-gray-500">Tidak ada data absensi untuk laporan.</p>';
                     return;
                 }
+                
+                // Dapatkan nama siswa
+                const siswaRef = collection(db, getPrivateCollectionPath('siswa'));
+                const siswaSnap = await getDocs(siswaRef);
+                const namaSiswaMap = {};
+                const kelasSiswaMap = {};
+                for (const doc of siswaSnap.docs) {
+                    namaSiswaMap[doc.id] = doc.data().nama;
+                    const kId = doc.data().kelasId;
+                    kelasSiswaMap[doc.id] = await getNamaKelas(kId);
+                }
+
+                // Rekap data
                 const rekap = {};
                 snapshot.forEach(docSnap => {
-                    const absensi = docSnap.data();
-                    const id = absensi.siswaId;
-                    if (!rekap[id]) {
-                        rekap[id] = { 
-                            nama: absensi.namaSiswa, 
-                            kelas: absensi.namaKelas, 
-                            Hadir: 0, 
-                            Izin: 0, 
-                            Sakit: 0, 
-                            Alfa: 0 
-                        };
-                    }
-                    if (rekap[id][absensi.status] !== undefined) {
-                        rekap[id][absensi.status]++;
+                    const data = docSnap.data().status;
+                    for (const siswaId in data) {
+                        if (!rekap[siswaId]) {
+                            rekap[siswaId] = {
+                                nama: namaSiswaMap[siswaId] || 'Siswa Dihapus',
+                                kelas: kelasSiswaMap[siswaId] || 'Kelas Dihapus',
+                                Hadir: 0, Izin: 0, Sakit: 0, Alfa: 0
+                            };
+                        }
+                        const status = data[siswaId];
+                        if (rekap[siswaId][status] !== undefined) {
+                            rekap[siswaId][status]++;
+                        }
                     }
                 });
-                let tableHtml = `<h3 class="text-xl font-semibold mb-4">Rekapitulasi Absensi</h3>
+                
+                // Buat tabel
+                let tableHtml = `<h3 class="text-xl font-semibold mb-4">Laporan Rekap Absensi</h3>
                     <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -1552,7 +1684,13 @@
                             </tr>
                         </thead>
                         <tbody>`;
+                
                 for (const siswaId in rekap) {
+                    // Filter by kelas jika dipilih
+                    if(kelasId && !snapshot.docs.some(d => d.data().status[siswaId] && d.data().kelasId === kelasId)) {
+                        continue;
+                    }
+
                     const data = rekap[siswaId];
                     tableHtml += `
                         <tr>
@@ -1567,6 +1705,7 @@
                 }
                 tableHtml += '</tbody></table></div>';
                 container.innerHTML = tableHtml;
+
             } catch (error) {
                 console.error("Error buat laporan absensi:", error);
                 container.innerHTML = '<p class="text-red-500">Gagal membuat laporan absensi.</p>';
@@ -1576,5 +1715,3 @@
     </script>
 </body>
 </html>
-
-
