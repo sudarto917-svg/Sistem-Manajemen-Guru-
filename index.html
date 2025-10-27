@@ -487,19 +487,19 @@
         <span id="connection-toast-message" class="font-medium"></span>
     </div>
 
-
     <script type="module">
         // Impor fungsi-fungsi Firebase yang diperlukan
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         
-        // import { 
+        import { 
             getAuth, 
             onAuthStateChanged,
             GoogleAuthProvider,
             signInWithPopup,
             signOut
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // import { 
+        
+        import { 
             getFirestore, 
             doc, 
             getDoc, 
@@ -513,14 +513,15 @@
             where, 
             getDocs,
             writeBatch,
-            serverTimestamp, // BARU: Untuk createdAt
+            serverTimestamp,
             setLogLevel
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Impor PapaParse (diasumsikan sudah di-load dari <head>)
 
         // === KONFIGURASI DAN INISIALISASI FIREBASE ===
         
         // --- KONFIGURASI FIREBASE ANDA ---
-        // (Pastikan ini adalah config Anda yang valid)
         const firebaseConfig = {
           apiKey: "AIzaSyCa7cNRlEvGfckYDwXppsI0TTxEnP4fIUc",
           authDomain: "sistem-manajemen-guru.firebaseapp.com",
@@ -531,20 +532,25 @@
         };
         // --- AKHIR DARI KONFIGURASI ANDA ---
 
+        // Variabel Global
         let app, auth, db, userId;
-        // BARU: Tambahkan provider Google
         const googleProvider = new GoogleAuthProvider();
+        let allKelasData = new Map();
+        let currentSiswaAbsensi = [];
+        let currentSiswaNilai = [];
+        const TUGAS_COUNT = 10;
+        const UTS_COUNT = 2;
+        const UAS_COUNT = 2;
 
-        let allKelasData = new Map(); // Simpan data kelas di sini
-
-        // setLogLevel('Debug'); // Hapus komentar untuk debugging
+        // === DEFINISI SEMUA FUNGSI ===
+        // (Semua fungsi dipindahkan ke sini, SEBELUM dipanggil)
 
         function getPrivateCollectionPath(collectionName) {
             if (!userId) throw new Error("User ID belum siap.");
             return `users/${userId}/${collectionName}`;
         }
 
-        // === Toast Notifikasi === (Tidak berubah)
+        // === Toast Notifikasi ===
         const toastElement = document.getElementById('connection-toast');
         const toastMessage = document.getElementById('connection-toast-message');
 
@@ -565,7 +571,7 @@
             }, 3000); 
         }
 
-        // === MANAJEMEN MODAL (NOTIFIKASI & KONFIRMASI) === (Tidak berubah)
+        // === MANAJEMEN MODAL (NOTIFIKASI & KONFIRMASI) ===
         const notificationModal = document.getElementById('notification-modal');
         const notificationMessage = document.getElementById('notification-message');
         const notificationClose = document.getElementById('notification-close');
@@ -574,9 +580,6 @@
             notificationMessage.textContent = message;
             notificationModal.classList.remove('hidden');
         }
-        notificationClose.addEventListener('click', () => {
-            notificationModal.classList.add('hidden');
-        });
 
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmationMessage = document.getElementById('confirmation-message');
@@ -589,50 +592,18 @@
             onConfirmCallback = onConfirm;
             confirmationModal.classList.remove('hidden');
         }
-        
-        confirmNoBtn.addEventListener('click', () => {
-            confirmationModal.classList.add('hidden');
-            onConfirmCallback = null;
-        });
-
-        confirmYesBtn.addEventListener('click', () => {
-            if (onConfirmCallback) {
-                onConfirmCallback();
-            }
-            confirmationModal.classList.add('hidden');
-            onConfirmCallback = null;
-        });
 
         const catatanModal = document.getElementById('catatan-siswa-modal');
         const catatanModalClose = document.getElementById('catatan-modal-close');
-        catatanModalClose.addEventListener('click', () => {
-            catatanModal.classList.add('hidden');
-        });
 
         // === MANAJEMEN AUTENTIKASI DAN STATE ===
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                
-                setupAuthListener(); // Panggil listener auth
-                setupNavigation();
-                setupFormListeners();
-                setInitialDate();
-
-                // BARU: Tambahkan listener untuk tombol login & logout
-                document.getElementById('btn-login-google').addEventListener('click', loginGoogle);
-                document.getElementById('btn-logout').addEventListener('click', logout);
-
-            } catch (e) {
-                console.error("Error inisialisasi Firebase:", e);
-                showConnectionToast("Gagal inisialisasi Firebase. Periksa config.", true);
-            }
-        });
-
-        // BARU: Fungsi Login Google
+        
         async function loginGoogle() {
+            if (!auth || !googleProvider) {
+                console.error("Auth belum siap.");
+                showNotification("Sistem autentikasi belum siap.", true);
+                return;
+            }
             try {
                 await signInWithPopup(auth, googleProvider);
                 // onAuthStateChanged akan menangani sisanya
@@ -642,7 +613,6 @@
             }
         }
 
-        // BARU: Fungsi Logout
         async function logout() {
             try {
                 await signOut(auth);
@@ -652,8 +622,7 @@
                 showNotification("Gagal logout: " + error.message);
             }
         }
-
-        // MODIFIKASI: Setup Auth Listener
+        
         function setupAuthListener() {
             const loginContainer = document.getElementById('login-container');
             const dashboardContainer = document.getElementById('dashboard-container');
@@ -661,27 +630,24 @@
 
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
-                    // User berhasil login
                     userId = user.uid;
-                    userEmailDisplay.textContent = user.email || "User"; // Tampilkan email
+                    userEmailDisplay.textContent = user.email || "User";
                     
-                    loginContainer.classList.add('hidden'); // Sembunyikan login
-                    dashboardContainer.classList.remove('hidden'); // Tampilkan dashboard
+                    loginContainer.classList.add('hidden');
+                    dashboardContainer.classList.remove('hidden');
 
                     if (!window.firebaseConnected) {
                         showConnectionToast("Berhasil login.", false);
                         window.firebaseConnected = true;
                     }
-                    await loadAllInitialData(); // Muat data setelah login berhasil
+                    await loadAllInitialData();
 
                 } else {
-                    // User logout
                     userId = null;
-                    loginContainer.classList.remove('hidden'); // Tampilkan login
-                    dashboardContainer.classList.add('hidden'); // Sembunyikan dashboard
+                    loginContainer.classList.remove('hidden');
+                    dashboardContainer.classList.add('hidden');
                     window.firebaseConnected = false;
                     
-                    // TODO: Hapus data sensitif dari UI jika perlu
                     document.getElementById('daftar-kelas-list').innerHTML = '<p class="text-gray-500">Silakan login...</p>';
                     document.getElementById('daftar-siswa-container').innerHTML = '<p class="text-gray-500">Silakan login...</p>';
                 }
@@ -698,7 +664,7 @@
             loadSumberBelajar();
         }
 
-        // === LOGIKA NAVIGASI === (Tidak berubah)
+        // === LOGIKA NAVIGASI ===
         function setupNavigation() {
             const navLinks = document.querySelectorAll('.nav-link');
             const pages = document.querySelectorAll('.page-content');
@@ -738,12 +704,29 @@
             document.getElementById('btn-simpan-absensi').addEventListener('click', handleSimpanAbsensi);
             document.getElementById('form-tambah-sumber').addEventListener('submit', handleTambahSumber);
             document.getElementById('form-tambah-catatan').addEventListener('submit', handleTambahCatatan);
-
-            // BARU: Listener untuk tombol import
             document.getElementById('btn-import-csv').addEventListener('click', handleImportSiswa);
+            
+            // Listener Modal
+            notificationClose.addEventListener('click', () => {
+                notificationModal.classList.add('hidden');
+            });
+            confirmNoBtn.addEventListener('click', () => {
+                confirmationModal.classList.add('hidden');
+                onConfirmCallback = null;
+            });
+            confirmYesBtn.addEventListener('click', () => {
+                if (onConfirmCallback) {
+                    onConfirmCallback();
+                }
+                confirmationModal.classList.add('hidden');
+                onConfirmCallback = null;
+            });
+            catatanModalClose.addEventListener('click', () => {
+                catatanModal.classList.add('hidden');
+            });
         }
 
-        // === BAGIAN 1: DASHBOARD === (Tidak berubah)
+        // === BAGIAN 1: DASHBOARD ===
         async function loadDashboardStats() {
             if (!userId) return;
             const kelasRef = collection(db, getPrivateCollectionPath('kelas'));
@@ -772,7 +755,6 @@
         }
 
         // === BAGIAN 2: KELAS & SISWA ===
-        // MODIFIKASI: loadKelas sekarang menyimpan data ke map global
         function loadKelas() {
             if (!userId) return;
             const q = query(collection(db, getPrivateCollectionPath('kelas')));
@@ -780,11 +762,10 @@
                 const listContainer = document.getElementById('daftar-kelas-list');
                 const selectDropdowns = document.querySelectorAll('#select-kelas-siswa, #jadwal-kelas, #absensi-pilih-kelas, #nilai-pilih-kelas, #materi-pilih-kelas, #laporan-pilih-kelas, #sumber-belajar-pilih-kelas');
                 
-                allKelasData.clear(); // BARU: Bersihkan map
+                allKelasData.clear();
                 listContainer.innerHTML = '';
                 
                 selectDropdowns.forEach(select => {
-                    // Simpan opsi pertama (placeholder)
                     const firstOption = select.options[0] ? select.options[0].outerHTML : '<option value="">Pilih Kelas</option>';
                     select.innerHTML = firstOption;
                 });
@@ -797,9 +778,8 @@
                 snapshot.docs.sort((a, b) => a.data().nama.localeCompare(b.data().nama)).forEach(doc => {
                     const kelas = doc.data();
                     const kelasId = doc.id;
-                    allKelasData.set(kelas.nama, kelasId); // BARU: Isi map (Nama Kelas -> ID Kelas)
+                    allKelasData.set(kelas.nama, kelasId);
 
-                    // Tambahkan ke Daftar Kelas
                     listContainer.innerHTML += `
                         <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                             <span class="font-medium">${kelas.nama}</span>
@@ -809,13 +789,11 @@
                         </div>
                     `;
 
-                    // Tambahkan ke semua dropdown
                     selectDropdowns.forEach(select => {
                         select.innerHTML += `<option value="${kelasId}" data-nama="${kelas.nama}">${kelas.nama}</option>`;
                     });
                 });
 
-                // Tambahkan listener hapus
                 document.querySelectorAll('.btn-hapus-kelas').forEach(button => {
                     button.addEventListener('click', () => {
                         const id = button.dataset.id;
@@ -850,25 +828,14 @@
         async function handleHapusKelas(kelasId, namaKelas) {
             if (!userId || !kelasId) return;
             try {
-                // Ini adalah operasi yang kompleks. Idealnya ditangani oleh backend (Cloud Function)
-                // Untuk frontend, kita hapus satu per satu (bisa lambat/tidak lengkap jika koneksi putus)
                 const batch = writeBatch(db);
-
-                // 1. Hapus kelas
                 batch.delete(doc(db, getPrivateCollectionPath('kelas'), kelasId));
-
-                // 2. Hapus siswa di kelas tsb
                 const siswaQuery = query(collection(db, getPrivateCollectionPath('siswa')), where("kelasId", "==", kelasId));
                 const siswaDocs = await getDocs(siswaQuery);
                 siswaDocs.forEach(doc => batch.delete(doc.ref));
-
-                // 3. Hapus jadwal di kelas tsb
                 const jadwalQuery = query(collection(db, getPrivateCollectionPath('jadwal')), where("kelasId", "==", kelasId));
                 const jadwalDocs = await getDocs(jadwalQuery);
                 jadwalDocs.forEach(doc => batch.delete(doc.ref));
-
-                // (Lanjutkan untuk absensi, nilai, materi, catatan jika diperlukan...)
-
                 await batch.commit();
                 showNotification(`Kelas "${namaKelas}" dan data siswanya berhasil dihapus.`);
             } catch (error) {
@@ -901,8 +868,6 @@
 
                 for (const kelasId in siswaByKelas) {
                     const namaKelas = siswaByKelas[kelasId][0]?.namaKelas || "Kelas (ID: " + kelasId + ")";
-                    
-                    // Urutkan siswa berdasarkan nama
                     siswaByKelas[kelasId].sort((a, b) => a.nama.localeCompare(b.nama));
                     
                     const siswaListHtml = siswaByKelas[kelasId].map(siswa => `
@@ -927,7 +892,6 @@
                     `;
                 }
 
-                // Listener Hapus Siswa
                 document.querySelectorAll('.btn-hapus-siswa').forEach(button => {
                     button.addEventListener('click', () => {
                         const id = button.dataset.id;
@@ -944,7 +908,6 @@
                     });
                 });
                 
-                // Listener Catatan Siswa
                 document.querySelectorAll('.btn-catatan-siswa').forEach(button => {
                     button.addEventListener('click', () => {
                         document.getElementById('catatan-modal-siswaId').value = button.dataset.id;
@@ -986,7 +949,6 @@
             }
         }
 
-        // BARU: Fungsi untuk Import Siswa
         async function handleImportSiswa() {
             const fileInput = document.getElementById('import-csv-file');
             const file = fileInput.files[0];
@@ -995,13 +957,10 @@
                 showNotification("Silakan pilih file CSV terlebih dahulu.", true);
                 return;
             }
-            
             if (!userId) {
                 showNotification("Anda harus login untuk import data.", true);
                 return;
             }
-
-            // Periksa map kelas
             if (allKelasData.size === 0) {
                 showNotification("Data kelas belum dimuat atau masih kosong. Tambahkan kelas terlebih dahulu.", true);
                 return;
@@ -1033,11 +992,9 @@
                             continue;
                         }
                         
-                        // Cari ID kelas dari nama kelas menggunakan map
                         const kelasId = allKelasData.get(namaKelas);
 
                         if (kelasId) {
-                            // Kelas ditemukan, tambahkan siswa ke batch
                             const siswaRef = doc(collection(db, getPrivateCollectionPath('siswa')));
                             batch.set(siswaRef, {
                                 nama: namaSiswa,
@@ -1047,7 +1004,6 @@
                             });
                             berhasilCount++;
                         } else {
-                            // Kelas tidak ditemukan
                             gagalCount++;
                             gagalList.push(`${namaSiswa} - ${namaKelas}: Nama kelas tidak ditemukan`);
                         }
@@ -1059,15 +1015,13 @@
                         if (gagalCount > 0) {
                             message += `\n${gagalCount} siswa gagal diimpor.`;
                             console.warn("Gagal import:", gagalList);
-                            // Tampilkan detail kegagalan jika perlu
-                            // message += `\nDetail Gagal:\n${gagalList.slice(0, 5).join('\n')}...`;
                         }
                         showNotification(message);
                     } catch (error) {
                         console.error("Error commit batch import:", error);
                         showNotification("Terjadi kesalahan besar saat menyimpan data import.", true);
                     } finally {
-                        fileInput.value = ''; // Reset input file
+                        fileInput.value = '';
                     }
                 },
                 error: (err) => {
@@ -1076,9 +1030,8 @@
                 }
             });
         }
-        // AKHIR BARU
 
-        // === BAGIAN 3: JADWAL === (Tidak berubah)
+        // === BAGIAN 3: JADWAL ===
         function loadJadwal() {
             if (!userId) return;
             const q = query(collection(db, getPrivateCollectionPath('jadwal')));
@@ -1096,7 +1049,6 @@
                     jadwalList.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Urutkan berdasarkan hari, lalu jam mulai
                 jadwalList.sort((a, b) => {
                     const hariIndexA = hariOrder.indexOf(a.hari);
                     const hariIndexB = hariOrder.indexOf(b.hari);
@@ -1169,9 +1121,7 @@
             }
         }
 
-        // === BAGIAN 4: ABSENSI === (Tidak berubah)
-        let currentSiswaAbsensi = []; // Simpan daftar siswa untuk disimpan
-        
+        // === BAGIAN 4: ABSENSI ===
         async function handleTampilkanAbsensi() {
             const kelasId = document.getElementById('absensi-pilih-kelas').value;
             const tanggal = document.getElementById('absensi-pilih-tanggal').value;
@@ -1183,15 +1133,13 @@
 
             const tbody = document.getElementById('daftar-absensi');
             tbody.innerHTML = '<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Memuat data siswa...</td></tr>';
-            currentSiswaAbsensi = []; // Reset
+            currentSiswaAbsensi = [];
 
-            // 1. Dapatkan data absensi yang SUDAH ADA (jika ada)
             const absensiDocId = `${tanggal}_${kelasId}`;
             const absensiRef = doc(db, getPrivateCollectionPath('absensi'), absensiDocId);
             const absensiSnap = await getDoc(absensiRef);
             const statusTersimpan = absensiSnap.exists() ? absensiSnap.data().status : {};
 
-            // 2. Dapatkan daftar siswa di kelas itu
             const siswaQuery = query(collection(db, getPrivateCollectionPath('siswa')), where("kelasId", "==", kelasId));
             const siswaSnap = await getDocs(siswaQuery);
 
@@ -1203,7 +1151,6 @@
 
             let tableHtml = '';
             
-            // Urutkan siswa berdasarkan nama
             const siswaList = [];
             siswaSnap.forEach(doc => siswaList.push({ id: doc.id, ...doc.data() }));
             siswaList.sort((a, b) => a.nama.localeCompare(b.nama));
@@ -1211,9 +1158,9 @@
             siswaList.forEach(siswa => {
                 const siswaId = siswa.id;
                 const namaSiswa = siswa.nama;
-                const status = statusTersimpan[siswaId] || 'H'; // Default 'Hadir'
+                const status = statusTersimpan[siswaId] || 'H';
 
-                currentSiswaAbsensi.push({ id: siswaId, nama: namaSiswa }); // Tambahkan ke daftar
+                currentSiswaAbsensi.push({ id: siswaId, nama: namaSiswa });
 
                 tableHtml += `
                     <tr class="hover:bg-gray-50">
@@ -1260,7 +1207,7 @@
                     namaKelas: namaKelas,
                     status: statusAbsensi,
                     updatedAt: serverTimestamp()
-                }, { merge: true }); // Gunakan merge true untuk update jika sudah ada
+                }, { merge: true });
 
                 showNotification(`Absensi kelas ${namaKelas} tanggal ${tanggal} berhasil disimpan.`);
             } catch (error) {
@@ -1269,12 +1216,7 @@
             }
         }
 
-        // === BAGIAN 5: NILAI === (Tidak berubah)
-        let currentSiswaNilai = [];
-        const TUGAS_COUNT = 10;
-        const UTS_COUNT = 2;
-        const UAS_COUNT = 2;
-
+        // === BAGIAN 5: NILAI ===
         async function handleTampilkanNilai() {
             const kelasId = document.getElementById('nilai-pilih-kelas').value;
             if (!kelasId || !userId) {
@@ -1286,7 +1228,6 @@
             tbody.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Memuat data nilai...</td></tr>';
             currentSiswaNilai = [];
 
-            // 1. Dapatkan daftar siswa di kelas itu
             const siswaQuery = query(collection(db, getPrivateCollectionPath('siswa')), where("kelasId", "==", kelasId));
             const siswaSnap = await getDocs(siswaQuery);
 
@@ -1295,12 +1236,10 @@
                 return;
             }
             
-            // Urutkan siswa
             const siswaList = [];
             siswaSnap.forEach(doc => siswaList.push({ id: doc.id, ...doc.data() }));
             siswaList.sort((a, b) => a.nama.localeCompare(b.nama));
             
-            // 2. Dapatkan data nilai (jika ada) dalam satu batch
             const nilaiRefs = siswaList.map(siswa => doc(db, getPrivateCollectionPath('nilai'), siswa.id));
             const nilaiDocs = await Promise.all(nilaiRefs.map(ref => getDoc(ref)));
             const nilaiMap = new Map();
@@ -1313,21 +1252,18 @@
             let tableHtml = '';
             siswaList.forEach(siswa => {
                 const siswaId = siswa.id;
-                currentSiswaNilai.push(siswaId); // Tambahkan ke daftar untuk disimpan
+                currentSiswaNilai.push(siswaId);
                 const nilaiData = nilaiMap.get(siswaId) || {};
 
                 tableHtml += `<tr class="hover:bg-gray-50" data-siswa-id="${siswaId}">`;
                 tableHtml += `<td class="px-6 py-4 sticky left-0 bg-white z-10">${siswa.nama}</td>`;
                 
-                // Tugas 1-10
                 for(let i=1; i <= TUGAS_COUNT; i++) {
                     tableHtml += `<td class="px-2 py-2"><input type="number" min="0" max="100" class="input-nilai w-20 border rounded px-2 py-1" data-tipe="tugas" data-index="${i}" value="${nilaiData[`tugas_${i}`] || ''}"></td>`;
                 }
-                // UTS 1-2
                 for(let i=1; i <= UTS_COUNT; i++) {
                     tableHtml += `<td class="px-2 py-2"><input type="number" min="0" max="100" class="input-nilai w-20 border rounded px-2 py-1" data-tipe="uts" data-index="${i}" value="${nilaiData[`uts_${i}`] || ''}"></td>`;
                 }
-                // UAS 1-2
                 for(let i=1; i <= UAS_COUNT; i++) {
                     tableHtml += `<td class="px-2 py-2"><input type="number" min="0" max="100" class="input-nilai w-20 border rounded px-2 py-1" data-tipe="uas" data-index="${i}" value="${nilaiData[`uas_${i}`] || ''}"></td>`;
                 }
@@ -1338,7 +1274,6 @@
 
             tbody.innerHTML = tableHtml;
 
-            // Listener untuk tombol simpan per siswa
             document.querySelectorAll('.btn-simpan-nilai-siswa').forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const siswaId = e.currentTarget.dataset.id;
@@ -1356,7 +1291,7 @@
                         const tipe = input.dataset.tipe;
                         const index = input.dataset.index;
                         const key = `${tipe}_${index}`;
-                        nilaiData[key] = input.valueAsNumber || null; // Simpan sebagai number atau null
+                        nilaiData[key] = input.valueAsNumber || null;
                     });
 
                     try {
@@ -1371,7 +1306,7 @@
             });
         }
         
-        // === BAGIAN 6: MATERI === (Tidak berubah)
+        // === BAGIAN 6: MATERI ===
         async function handleTambahMateri(e) {
             e.preventDefault();
             const selectKelas = document.getElementById('materi-pilih-kelas');
@@ -1396,7 +1331,7 @@
                     createdAt: serverTimestamp()
                 });
                 document.getElementById('form-tambah-materi').reset();
-                setInitialDate(); // Kembalikan tanggal ke hari ini
+                setInitialDate();
                 showNotification("Catatan materi berhasil disimpan.");
             } catch (error) {
                 console.error("Error tambah materi:", error);
@@ -1418,7 +1353,6 @@
                 const materiList = [];
                 snapshot.forEach(doc => materiList.push({ id: doc.id, ...doc.data() }));
                 
-                // Urutkan berdasarkan tanggal (terbaru dulu)
                 materiList.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
 
                 materiList.forEach(materi => {
@@ -1453,7 +1387,7 @@
             });
         }
 
-        // === BAGIAN 7: SUMBER BELAJAR === (Tidak berubah)
+        // === BAGIAN 7: SUMBER BELAJAR ===
         async function handleTambahSumber(e) {
             e.preventDefault();
             const judul = document.getElementById('sumber-judul').value.trim();
@@ -1473,8 +1407,8 @@
                     judul,
                     link,
                     deskripsi,
-                    kelasId, // "semua" atau ID kelas
-                    namaKelas, // "Semua Kelas" atau nama kelas
+                    kelasId,
+                    namaKelas,
                     createdAt: serverTimestamp()
                 });
                 document.getElementById('form-tambah-sumber').reset();
@@ -1499,7 +1433,6 @@
                 const sumberList = [];
                 snapshot.forEach(doc => sumberList.push({ id: doc.id, ...doc.data() }));
                 
-                // Urutkan berdasarkan waktu (terbaru dulu)
                 sumberList.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
                 sumberList.forEach(sumber => {
@@ -1535,7 +1468,7 @@
             });
         }
         
-        // === BAGIAN 8: CATATAN SISWA (MODAL) === (Tidak berubah)
+        // === BAGIAN 8: CATATAN SISWA (MODAL) ===
         async function handleTambahCatatan(e) {
             e.preventDefault();
             const siswaId = document.getElementById('catatan-modal-siswaId').value;
@@ -1556,11 +1489,10 @@
                     kelasId,
                     namaKelas,
                     catatan,
-                    tanggal: new Date().toISOString().split('T')[0], // Catat tanggal hari ini
+                    tanggal: new Date().toISOString().split('T')[0],
                     createdAt: serverTimestamp()
                 });
                 document.getElementById('form-tambah-catatan').reset();
-                // loadCatatanSiswa(siswaId); // onSnapshot akan auto-refresh
             } catch (error) {
                 console.error("Error tambah catatan:", error);
                 showNotification("Gagal menyimpan catatan.", true);
@@ -1583,7 +1515,6 @@
                 const catatanList = [];
                 snapshot.forEach(doc => catatanList.push({ id: doc.id, ...doc.data() }));
 
-                // Urutkan (terbaru dulu)
                 catatanList.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
                 catatanList.forEach(catatan => {
@@ -1606,7 +1537,6 @@
                         showConfirmation("Yakin ingin menghapus catatan ini?", async () => {
                             try {
                                 await deleteDoc(doc(db, getPrivateCollectionPath('catatanSiswa'), id));
-                                // showNotification("Catatan dihapus."); // Tidak perlu, onSnapshot auto-refresh
                             } catch (error) {
                                 console.error("Error hapus catatan:", error);
                                 showNotification("Gagal menghapus catatan.", true);
@@ -1617,7 +1547,7 @@
             });
         }
         
-        // === BAGIAN 9: LAPORAN === (Tidak berubah)
+        // === BAGIAN 9: LAPORAN ===
         async function handleBuatLaporan() {
             const tipe = document.getElementById('laporan-tipe').value;
             const kelasId = document.getElementById('laporan-pilih-kelas').value;
@@ -1655,7 +1585,6 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                 `;
 
-                // 1. Ambil data siswa (filter by kelas jika dipilih)
                 let siswaQuery = collection(db, getPrivateCollectionPath('siswa'));
                 if (kelasId) {
                     siswaQuery = query(siswaQuery, where("kelasId", "==", kelasId));
@@ -1668,9 +1597,8 @@
                 
                 const siswaList = [];
                 siswaSnap.forEach(doc => siswaList.push({ id: doc.id, ...doc.data() }));
-                siswaList.sort((a, b) => a.nama.localeCompare(b.nama)); // Urutkan
+                siswaList.sort((a, b) => a.nama.localeCompare(b.nama));
 
-                // 2. Ambil data nilai
                 const nilaiRefs = siswaList.map(siswa => doc(db, getPrivateCollectionPath('nilai'), siswa.id));
                 const nilaiDocs = await Promise.all(nilaiRefs.map(ref => getDoc(ref)));
                 const nilaiMap = new Map();
@@ -1680,7 +1608,6 @@
                     }
                 });
                 
-                // 3. Buat baris tabel
                 siswaList.forEach(siswa => {
                     const nilai = nilaiMap.get(siswa.id) || {};
                     tableHtml += `<tr class="text-sm">`;
@@ -1722,7 +1649,6 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                 `;
 
-                // 1. Dapatkan semua siswa
                 let siswaQuery = collection(db, getPrivateCollectionPath('siswa'));
                 if (kelasId) {
                     siswaQuery = query(siswaQuery, where("kelasId", "==", kelasId));
@@ -1733,7 +1659,6 @@
                     return;
                 }
                 
-                // Buat rekap
                 const rekap = {};
                 siswaSnap.forEach(doc => {
                     rekap[doc.id] = {
@@ -1743,7 +1668,6 @@
                     };
                 });
                 
-                // 2. Dapatkan semua data absensi
                 let absensiQuery = collection(db, getPrivateCollectionPath('absensi'));
                 if (kelasId) {
                     absensiQuery = query(absensiQuery, where("kelasId", "==", kelasId));
@@ -1753,7 +1677,7 @@
                 absensiSnap.forEach(doc => {
                     const statusSiswa = doc.data().status;
                     for (const siswaId in statusSiswa) {
-                        if (rekap[siswaId]) { // Jika siswa masih ada
+                        if (rekap[siswaId]) {
                             const status = statusSiswa[siswaId];
                             if (rekap[siswaId][status] !== undefined) {
                                 rekap[siswaId][status]++;
@@ -1762,11 +1686,9 @@
                     }
                 });
 
-                // 3. Urutkan rekap berdasarkan nama
                 let rekapEntries = Object.entries(rekap);
                 rekapEntries.sort(([, a], [, b]) => a.nama.localeCompare(b.nama));
 
-                // 4. Buat baris tabel
                 for (const [siswaId, data] of rekapEntries) {
                     tableHtml += `
                         <tr>
@@ -1788,6 +1710,31 @@
                 container.innerHTML = '<p class="text-red-500">Gagal membuat laporan absensi.</p>';
             }
         }
+
+        // === TITIK MASUK APLIKASI (ENTRY POINT) ===
+        // Listener ini sekarang dipanggil di paling akhir, 
+        // setelah semua fungsi di atasnya didefinisikan.
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                // Panggil fungsi setup (sekarang sudah aman karena telah didefinisikan di atas)
+                setupAuthListener(); 
+                setupNavigation();
+                setupFormListeners();
+                setInitialDate();
+
+                // Tambahkan listener untuk tombol login & logout
+                document.getElementById('btn-login-google').addEventListener('click', loginGoogle);
+                document.getElementById('btn-logout').addEventListener('click', logout);
+
+            } catch (e) {
+                console.error("Error inisialisasi Firebase:", e);
+                showConnectionToast("Gagal inisialisasi Firebase. Periksa config.", true);
+            }
+        });
 
     </script>
 </body>
