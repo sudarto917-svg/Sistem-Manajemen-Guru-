@@ -821,6 +821,7 @@
             });
         }
         
+        // DIUBAH: Penambahan .sort()
         function loadSiswa() {
             const siswaRef = collection(db, getPrivateCollectionPath('siswa'));
             onSnapshot(siswaRef, async (snapshot) => {
@@ -849,6 +850,10 @@
                 // Tampilkan per kelas
                 for (const kelasId in siswaByKelas) {
                     const data = siswaByKelas[kelasId];
+                    
+                    // BARU: Urutkan siswa berdasarkan nama
+                    data.siswa.sort((a, b) => a.nama.localeCompare(b.nama));
+
                     let siswaHtml = data.siswa.map(siswa => `
                         <div class="flex justify-between items-center p-3 hover:bg-gray-50 rounded">
                             <span>${siswa.nama}</span>
@@ -1027,7 +1032,8 @@
         }
 
 
-        // === BAGIAN 4: ABSENSI SISWA === (Tidak berubah)
+        // === BAGIAN 4: ABSENSI SISWA ===
+        // DIUBAH: Penambahan .sort()
         async function handleTampilkanAbsensi() {
             const kelasId = document.getElementById('absensi-pilih-kelas').value;
             const tanggal = document.getElementById('absensi-pilih-tanggal').value;
@@ -1061,7 +1067,13 @@
                 }
 
                 container.innerHTML = '';
-                siswaSnap.forEach(docSnap => {
+                
+                // BARU: Ambil dan urutkan dokumen siswa
+                let siswaDocs = siswaSnap.docs;
+                siswaDocs.sort((a, b) => a.data().nama.localeCompare(b.data().nama));
+
+                // BARU: Ulangi 'siswaDocs' yang sudah diurutkan
+                siswaDocs.forEach(docSnap => {
                     const siswa = docSnap.data();
                     const siswaId = docSnap.id;
                     const status = dataAbsensi[siswaId] || 'Hadir'; // Default 'Hadir'
@@ -1217,16 +1229,16 @@
         }
 
 
+        // DIUBAH: Penambahan .sort() dan 14 kolom nilai
         async function handleTampilkanNilai() {
             const kelasId = document.getElementById('nilai-pilih-kelas').value;
             const container = document.getElementById('daftar-nilai');
             
-            // Ganti colspan="6" menjadi "16"
+            // Ganti colspan menjadi "16"
             if (!kelasId) {
                 container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Pilih kelas terlebih dahulu.</td></tr>';
                 return;
             }
-            // Ganti colspan="6" menjadi "16"
             container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Memuat data siswa...</td></tr>';
             
             try {
@@ -1234,14 +1246,23 @@
                 const q = query(siswaRef, where("kelasId", "==", kelasId));
                 const siswaSnap = await getDocs(q);
                 
-                // Ganti colspan="6" menjadi "16"
                 if (siswaSnap.empty) {
                     container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-gray-500">Tidak ada siswa di kelas ini.</td></tr>';
                     return;
                 }
 
                 container.innerHTML = '';
-                for (const docSnap of siswaSnap.docs) {
+                
+                // BARU: Urutkan dokumen siswa berdasarkan nama
+                let siswaDocs = siswaSnap.docs;
+                siswaDocs.sort((a, b) => {
+                    const namaA = a.data().nama;
+                    const namaB = b.data().nama;
+                    return namaA.localeCompare(namaB);
+                });
+
+                // BARU: Ulangi 'siswaDocs' yang sudah diurutkan
+                for (const docSnap of siswaDocs) {
                     const siswa = docSnap.data();
                     const siswaId = docSnap.id;
                     const nilaiRef = doc(db, getPrivateCollectionPath('nilai'), siswaId);
@@ -1275,11 +1296,11 @@
                 });
             } catch (error) {
                 console.error("Error tampilkan nilai:", error);
-                // Ganti colspan="6" menjadi "16"
                 container.innerHTML = '<tr><td colspan="16" class="px-6 py-4 text-center text-red-500">Gagal memuat data.</td></tr>';
             }
         }
 
+        // DIUBAH: Simpan 14 kolom nilai
         async function handleSimpanNilaiSiswa(siswaId) {
             const row = document.querySelector(`.siswa-nilai-row[data-siswa-id="${siswaId}"]`);
             if (!row) return;
@@ -1538,7 +1559,7 @@
             }
         }
 
-        // FUNGSI INI BERUBAH
+        // DIUBAH: Penambahan 14 kolom nilai dan .sort()
         async function buatLaporanNilai(kelasId, container) {
             try {
                 const nilaiRef = collection(db, getPrivateCollectionPath('nilai'));
@@ -1581,8 +1602,16 @@
                         </thead>
                         <tbody>`;
 
-                // Ganti Logika Kalkulasi dan Tampilan
-                snapshot.forEach(docSnap => {
+                // BARU: Ambil dan urutkan dokumen
+                let nilaiDocs = snapshot.docs;
+                nilaiDocs.sort((a, b) => {
+                    const namaA = a.data().namaSiswa;
+                    const namaB = b.data().namaSiswa;
+                    return (namaA || "").localeCompare(namaB || ""); // Safety check
+                });
+
+                // BARU: Ulangi 'nilaiDocs' yang sudah diurutkan
+                nilaiDocs.forEach(docSnap => {
                     const nilai = docSnap.data();
                     
                     // Kalkulasi rata-rata baru (total 14 nilai)
@@ -1623,7 +1652,7 @@
             }
         }
 
-        // FUNGSI INI TIDAK BERUBAH
+        // DIUBAH: Penambahan .sort()
         async function buatLaporanAbsensi(kelasId, container) {
             try {
                 const absensiRef = collection(db, getPrivateCollectionPath('absensi'));
@@ -1685,13 +1714,20 @@
                         </thead>
                         <tbody>`;
                 
-                for (const siswaId in rekap) {
+                // BARU: Konversi rekap ke array dan urutkan berdasarkan nama
+                let rekapEntries = Object.entries(rekap);
+                rekapEntries.sort(([, a], [, b]) => {
+                    // Urutkan berdasarkan nama (a.nama dan b.nama)
+                    return a.nama.localeCompare(b.nama);
+                });
+
+                // BARU: Ulangi array yang sudah diurutkan
+                for (const [siswaId, data] of rekapEntries) {
                     // Filter by kelas jika dipilih
                     if(kelasId && !snapshot.docs.some(d => d.data().status[siswaId] && d.data().kelasId === kelasId)) {
                         continue;
                     }
 
-                    const data = rekap[siswaId];
                     tableHtml += `
                         <tr>
                             <td class="px-4 py-2">${data.nama}</td>
