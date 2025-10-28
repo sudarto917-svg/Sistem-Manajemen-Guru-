@@ -309,6 +309,8 @@
                     </table>
                 </div>
             </div>
+
+
             <div id="materi-page" class="page-content">
                 <h2 class="text-3xl font-bold mb-6">Perkembangan Materi</h2>
 
@@ -422,7 +424,8 @@
                 </div>
 
             </div>
-            </main>
+
+        </main>
     </div> 
     
     <div id="notification-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -528,6 +531,8 @@
             </div>
         </div>
     </div>
+
+
     <div id="connection-toast" class="fixed bottom-0 left-1/2 -translate-x-1/2 mb-5 p-4 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-y-20 opacity-0 hidden">
         <span id="connection-toast-message" class="font-medium"></span>
     </div>
@@ -644,7 +649,6 @@
         const catatanModal = document.getElementById('catatan-siswa-modal');
         const catatanModalClose = document.getElementById('catatan-modal-close');
         
-        // PERUBAHAN: Definisikan modal nilai
         const nilaiModal = document.getElementById('input-nilai-modal');
         const nilaiModalClose = document.getElementById('nilai-modal-close');
 
@@ -670,7 +674,7 @@
             try {
                 await signOut(auth);
                 // onAuthStateChanged akan menangani sisanya
-            } catch (error)
+            } catch (error) {
                 console.error("Gagal logout:", error);
                 showNotification("Gagal logout: " + error.message);
             }
@@ -753,19 +757,16 @@
             document.getElementById('form-tambah-materi').addEventListener('submit', handleTambahMateri);
             document.getElementById('btn-tampilkan-absensi').addEventListener('click', handleTampilkanAbsensi);
             
-            // PERUBAHAN: Listener untuk tombol nilai
             document.getElementById('btn-tampilkan-nilai').addEventListener('click', handleTampilkanSiswaUntukNilai);
             
-            // PERUBAHAN: Listener untuk tombol laporan
             document.getElementById('btn-buat-laporan').addEventListener('click', handleBuatLaporan);
-            document.getElementById('btn-export-laporan').addEventListener('click', handleExportLaporan); // <-- BARU
+            document.getElementById('btn-export-laporan').addEventListener('click', handleExportLaporan);
             
             document.getElementById('btn-simpan-absensi').addEventListener('click', handleSimpanAbsensi);
             document.getElementById('form-tambah-sumber').addEventListener('submit', handleTambahSumber);
             document.getElementById('form-tambah-catatan').addEventListener('submit', handleTambahCatatan);
             document.getElementById('btn-import-csv').addEventListener('click', handleImportSiswa);
             
-            // PERUBAHAN: Listener untuk modal nilai baru
             document.getElementById('form-tambah-nilai').addEventListener('submit', handleSimpanNilaiBaru);
             nilaiModalClose.addEventListener('click', () => nilaiModal.classList.add('hidden'));
 
@@ -1000,7 +1001,8 @@
                 
                 // Tambahkan listener ke tombol catatan
                 document.querySelectorAll('.btn-catatan-siswa').forEach(button => {
-                    button.addEventListener('click', ()
+                    // ===== INI ADALAH BARIS YANG DIPERBAIKI =====
+                    button.addEventListener('click', () => { 
                         const { siswaId, namaSiswa, kelasId, namaKelas } = button.dataset;
                         openCatatanModal(siswaId, namaSiswa, kelasId, namaKelas);
                     });
